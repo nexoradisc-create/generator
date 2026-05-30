@@ -2,483 +2,339 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>TOKSTORMS | Viral Injector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptBlox Account Generator</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            background: radial-gradient(circle at 20% 30%, #0a0a0f, #030303);
-            font-family: 'Inter', sans-serif;
+            background: #0a0c12;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            padding: 20px;
             min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #0f1119;
+            border-radius: 20px;
+            border: 1px solid #2a2f3f;
+            overflow: hidden;
+        }
+        .header {
+            background: #080b10;
+            padding: 20px 25px;
+            border-bottom: 2px solid #00ffaa;
+        }
+        .header h1 {
+            color: #00ffaa;
+            font-size: 1.6rem;
+            letter-spacing: -1px;
+        }
+        .header .sub {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+        .controls {
+            padding: 25px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            position: relative;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #0d0f17;
+            border-bottom: 1px solid #1e212c;
         }
-
-        /* animated glass BG */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(255, 68, 68, 0.02) 0px, rgba(255, 68, 68, 0.02) 2px, transparent 2px, transparent 8px);
-            pointer-events: none;
-            z-index: 0;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-
-        .glass-panel {
-            background: rgba(8, 8, 16, 0.75);
-            backdrop-filter: blur(16px);
-            border-radius: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(37, 244, 238, 0.2) inset;
-            width: 100%;
-            max-width: 620px;
-            padding: 2rem 2rem 2.2rem;
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        .neon-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .neon-header h1 {
-            font-size: 2.6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FE2C55, #25F4EE, #FFB800);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-            animation: shimmer 4s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(254, 44, 85, 0.2);
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            padding: 0.3rem 1rem;
+        .control-group label {
+            color: #00ffaa;
             font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #FE2C55;
-            border: 1px solid rgba(254, 44, 85, 0.4);
-            margin-top: 8px;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
-
-        /* input groups */
-        .input-group {
-            margin-bottom: 1.8rem;
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            color: #e0e0e0;
-            font-weight: 600;
-            font-size: 0.9rem;
-            letter-spacing: 0.3px;
-        }
-
-        .input-label i {
-            font-size: 1.2rem;
-            color: #25F4EE;
-            text-shadow: 0 0 5px #25F4EE;
-        }
-
-        .custom-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1.2rem;
-            padding: 0.9rem 1.2rem;
-            color: white;
-            font-size: 0.95rem;
-            font-family: 'Inter', monospace;
-            transition: all 0.2s;
+        input, select {
+            background: #05070c;
+            border: 1px solid #2a2f3f;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #00ffaa;
+            font-family: monospace;
             outline: none;
         }
-
-        .custom-input:focus {
-            border-color: #25F4EE;
-            box-shadow: 0 0 12px rgba(37, 244, 238, 0.3);
-            background: #0a0a14;
-        }
-
-        .custom-input::placeholder {
-            color: rgba(255, 255, 255, 0.35);
-            font-weight: 400;
-        }
-
-        .double-row {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .double-row .input-group {
-            flex: 1;
-        }
-
-        .action-selector {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 1.5rem;
-            padding: 0.2rem;
-            display: flex;
-            margin: 1rem 0 1.2rem;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .action-btn {
-            flex: 1;
-            text-align: center;
-            padding: 0.8rem 0;
-            font-weight: 700;
-            border-radius: 1.3rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #aaa;
-            background: transparent;
+        button {
+            background: #1e2a3a;
             border: none;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .action-btn.active {
-            background: #FE2C55;
+            padding: 10px 22px;
+            border-radius: 30px;
             color: white;
-            box-shadow: 0 5px 12px rgba(254, 44, 85, 0.3);
+            font-weight: bold;
+            cursor: pointer;
+            font-family: monospace;
+            margin-top: 18px;
+            transition: 0.2s;
         }
-
-        .action-btn:first-child.active {
-            background: #25F4EE;
-            color: #000;
+        button:hover {
+            background: #00ffaa;
+            color: black;
+            box-shadow: 0 0 12px #00ffaa;
         }
-
-        .amount-slider {
-            margin: 1.2rem 0 1.5rem;
-        }
-
-        .slider-header {
+        .stats-bar {
+            padding: 12px 25px;
+            background: #0b0d14;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #1e212c;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            color: #ccc;
         }
-
-        input[type=range] {
-            width: 100%;
-            height: 5px;
-            -webkit-appearance: none;
-            background: linear-gradient(90deg, #25F4EE, #FE2C55);
-            border-radius: 10px;
-            outline: none;
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid #FE2C55;
-            box-shadow: 0 0 8px #FE2C55;
-        }
-
-        #amountValue {
-            color: #25F4EE;
-            font-weight: 800;
-            background: #00000066;
-            padding: 2px 8px;
-            border-radius: 40px;
-        }
-
-        .generate-button {
-            width: 100%;
-            background: linear-gradient(95deg, #FE2C55, #ff5e7e);
-            border: none;
-            padding: 1rem;
-            border-radius: 2rem;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 0.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 20px rgba(254, 44, 85, 0.3);
-        }
-
-        .generate-button:hover {
-            transform: scale(1.01);
-            background: linear-gradient(95deg, #ff1744, #FE2C55);
-            box-shadow: 0 8px 28px #FE2C55;
-        }
-
-        .result-console {
-            margin-top: 2rem;
-            background: #03030ae6;
-            border-radius: 1.5rem;
-            padding: 1rem;
-            border: 1px solid rgba(37, 244, 238, 0.3);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
-            color: #0f0;
-            max-height: 280px;
+        .output-area {
+            padding: 25px;
+            max-height: 500px;
             overflow-y: auto;
-            display: none;
-            white-space: pre-wrap;
-            word-break: break-word;
         }
-
-        .result-console::-webkit-scrollbar {
-            width: 4px;
+        .account-card {
+            background: #07090f;
+            border-left: 4px solid #00ffaa;
+            margin-bottom: 12px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            word-break: break-all;
         }
-
-        .glow-text {
-            color: #aaa;
+        .account-card .line {
+            margin: 6px 0;
+            color: #cbd5e1;
+        }
+        .account-card .label {
+            color: #00ffaa;
+            font-weight: bold;
+            display: inline-block;
+            width: 80px;
+        }
+        .token-text {
+            background: #00000066;
+            padding: 4px 8px;
+            border-radius: 8px;
+            color: #ffaa66;
+        }
+        .copy-btn {
+            background: #1f2a3e;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #00ffaa;
+            cursor: pointer;
+            margin-left: 12px;
             font-size: 0.7rem;
-            text-align: center;
-            margin-top: 1.2rem;
         }
-        i.fa, i.far, i.fab {
-            pointer-events: none;
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #4a5568;
+            border-top: 1px solid #1e212c;
         }
     </style>
 </head>
 <body>
-
-<div class="glass-panel">
-    <div class="neon-header">
-        <h1><i class="fab fa-tiktok"></i> TOKSTORMS</h1>
-        <div class="badge">⚡ NEXT-GEN VIRAL ENGINE ⚡</div>
+<div class="container">
+    <div class="header">
+        <h1>🌀 SCRIPTBLOX · ACCOUNT GENERATOR</h1>
+        <div class="sub">multi-IP simulation | randomized credentials + token emulation</div>
     </div>
-
-    <!-- PROFILE LINK SECTION (FOLLOWERS) -->
-    <div class="input-group">
-        <div class="input-label">
-            <i class="fas fa-user-astronaut"></i>
-            <span>TIKTOK PROFILE LINK (for Followers)</span>
+    <div class="controls">
+        <div class="control-group">
+            <label>ACCOUNT COUNT</label>
+            <input type="number" id="accCount" min="1" max="50" value="5">
         </div>
-        <input type="text" id="profileLink" class="custom-input" placeholder="https://www.tiktok.com/@username  or  @username" value="https://www.tiktok.com/@viralstar">
-    </div>
-
-    <!-- VIDEO LINK SECTION (LIKES) -->
-    <div class="input-group">
-        <div class="input-label">
-            <i class="fas fa-video"></i>
-            <span>TIKTOK VIDEO LINK (for Likes)</span>
+        <div class="control-group">
+            <label>IP SPOOF MODE</label>
+            <select id="ipMode">
+                <option value="random">RANDOM IP POOL</option>
+                <option value="sequential">SEQUENTIAL /24 RANGE</option>
+                <option value="tor">TOR EXIT NODE SIM</option>
+            </select>
         </div>
-        <input type="text" id="videoLink" class="custom-input" placeholder="https://www.tiktok.com/@user/video/123456789" value="https://www.tiktok.com/@viralstar/video/745678912345">
-    </div>
-
-    <!-- double action toggle -->
-    <div class="action-selector" id="actionTabs">
-        <button class="action-btn active" data-mode="followers"><i class="fas fa-users"></i> FOLLOWER BOOST</button>
-        <button class="action-btn" data-mode="likes"><i class="fas fa-heart"></i> LIKE SURGE</button>
-        <button class="action-btn" data-mode="both"><i class="fas fa-bolt"></i> COMBO (BOTH)</button>
-    </div>
-
-    <!-- amount slider -->
-    <div class="amount-slider">
-        <div class="slider-header">
-            <span><i class="fas fa-chart-line"></i> INJECTION VOLUME</span>
-            <span id="amountValue">50,000</span>
+        <div class="control-group">
+            <label>&nbsp;</label>
+            <button id="generateBtn">⚡ GENERATE ACCOUNTS</button>
         </div>
-        <input type="range" id="amountRange" min="500" max="500000" step="500" value="50000">
     </div>
-
-    <button class="generate-button" id="injectBtn">
-        <i class="fas fa-bolt"></i> INJECT NOW <i class="fas fa-arrow-right"></i>
-    </button>
-
-    <div id="resultArea" class="result-console"></div>
-    <div class="glow-text">
-        <i class="fas fa-shield-alt"></i> encrypted relay · simulation layer · no real api calls
+    <div class="stats-bar">
+        <span id="genStatus">Ready</span>
+        <span id="countDisplay">0 accounts generated</span>
+    </div>
+    <div class="output-area" id="outputArea">
+        <div style="color:#6b7280; text-align:center;">Press GENERATE to create accounts with unique IPs, passwords + tokens</div>
+    </div>
+    <div class="footer">
+        ⚠️ SIMULATION MODE — No real ScriptBlox accounts created. All data is locally generated mock.
     </div>
 </div>
 
 <script>
     (function() {
-        // DOM elements
-        const profileInput = document.getElementById('profileLink');
-        const videoInput = document.getElementById('videoLink');
-        const actionBtns = document.querySelectorAll('.action-btn');
-        const amountSlider = document.getElementById('amountRange');
-        const amountSpan = document.getElementById('amountValue');
-        const injectBtn = document.getElementById('injectBtn');
-        const resultDiv = document.getElementById('resultArea');
+        const accCountInput = document.getElementById('accCount');
+        const ipModeSelect = document.getElementById('ipMode');
+        const generateBtn = document.getElementById('generateBtn');
+        const outputArea = document.getElementById('outputArea');
+        const genStatusSpan = document.getElementById('genStatus');
+        const countDisplaySpan = document.getElementById('countDisplay');
 
-        let currentMode = 'followers'; // 'followers', 'likes', 'both'
+        // Mock IP pools (different origin IPs for "different ips" requirement)
+        const randomIpPool = [
+            "45.33.22.11", "185.142.53.24", "103.48.14.77", "202.61.88.12", "91.121.55.89",
+            "178.32.211.16", "5.135.76.33", "104.28.12.5", "172.67.200.1", "188.166.23.9",
+            "159.89.185.30", "51.79.68.122", "139.59.101.89", "165.227.56.12", "167.71.237.14"
+        ];
 
-        // update amount display
-        function updateAmountDisplay() {
-            let val = parseInt(amountSlider.value, 10);
-            amountSpan.innerText = val.toLocaleString('en-US');
+        function getRandomIpFromPool() {
+            return randomIpPool[Math.floor(Math.random() * randomIpPool.length)];
         }
-        amountSlider.addEventListener('input', updateAmountDisplay);
-        updateAmountDisplay();
 
-        // tab switching
-        actionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                actionBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentMode = btn.getAttribute('data-mode');
+        function getSequentialIp(index) {
+            const baseA = 192 + (index % 63);
+            const baseB = 168 + (index % 40);
+            const baseC = (index % 254) + 1;
+            const baseD = (index % 253) + 1;
+            return `${baseA}.${baseB}.${baseC}.${baseD}`;
+        }
+
+        function getTorSimIp() {
+            const torOct1 = [ 45, 80, 109, 185, 193 ][Math.floor(Math.random() * 5)];
+            const torOct2 = Math.floor(Math.random() * 255);
+            const torOct3 = Math.floor(Math.random() * 255);
+            const torOct4 = Math.floor(Math.random() * 255);
+            return `${torOct1}.${torOct2}.${torOct3}.${torOct4}`;
+        }
+
+        function generateRandomUsername(baseIndex) {
+            const prefixes = ["blox", "script", "void", "nexus", "phantom", "crypt", "alpha", "omega", "zeta", "neon"];
+            const suffixes = ["_god", "_x", "_hax", "_real", "_token", "_acc", "_pro", "_edge", "_v2", "_zz"];
+            const randNum = Math.floor(Math.random() * 9000) + 1000;
+            const prefix = prefixes[baseIndex % prefixes.length];
+            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+            return `${prefix}${randNum}${suffix}`;
+        }
+
+        function generateRandomPassword() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let pwd = '';
+            for (let i = 0; i < 14; i++) {
+                pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return pwd;
+        }
+
+        function generateToken(username, ipUsed, timestamp) {
+            // mock token generator - simulates JWT style
+            const b64part = btoa(`${username}:${ipUsed}:${timestamp}`).substring(0, 32);
+            const randomSuffix = Math.random().toString(36).substring(2, 12);
+            return `sb_tk_${b64part}${randomSuffix}`;
+        }
+
+        function copyToClipboard(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = "✓ COPIED";
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                }, 1500);
+            }).catch(() => {
+                btnElement.innerText = "FAIL";
             });
-        });
-
-        // helper: extract username from profile link or raw @
-        function extractUsernameFromProfile(profileUrl) {
-            let raw = profileUrl.trim();
-            if (!raw) return "anonymous";
-            if (raw.startsWith('@')) return raw.substring(1).split('?')[0].split('/')[0];
-            let match = raw.match(/tiktok\.com\/@([a-zA-Z0-9._]+)/i);
-            if (match) return match[1];
-            match = raw.match(/@([a-zA-Z0-9._]+)/);
-            if (match) return match[1];
-            return raw.replace(/[^a-zA-Z0-9._]/g, '').substring(0, 30);
         }
 
-        // extract video ID or full identifier from video link
-        function extractVideoIdentifier(videoUrl) {
-            let raw = videoUrl.trim();
-            if (!raw) return "unknown_video";
-            let match = raw.match(/\/video\/(\d+)/i);
-            if (match) return match[1];
-            match = raw.match(/tiktok\.com\/.*?\/(\d+)/);
-            if (match) return match[1];
-            return "vid_" + Date.now();
-        }
-
-        // generate mock token
-        function genToken(prefix = 'tk') {
-            return prefix + '_' + Array.from({length: 24}, () => Math.random().toString(36).charAt(2)).join('');
-        }
-
-        // simulation core for followers
-        function simulateFollowers(username, count) {
-            const reqId = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
-            const timestamp = new Date().toISOString();
-            let steps = [];
-            steps.push(`⛁ TIKTOK FOLLOWER INJECTION [REQ: ${reqId}]`);
-            steps.push(`⤷ TARGET PROFILE: @${username}`);
-            steps.push(`⤷ UNITS: ${count.toLocaleString()} followers`);
-            steps.push(`⤷ STATUS: handshake with edge nodes...`);
-            for (let i = 1; i <= 4; i++) {
-                let percent = i * 25;
-                steps.push(`   └─ PHASE ${i}/4 : ${percent}% routed through proxy swarm (${Math.floor(count/4 * i)} units)`);
+        function renderAccounts(accounts) {
+            if (!accounts.length) {
+                outputArea.innerHTML = '<div style="color:#6b7280; text-align:center;">No accounts generated.</div>';
+                return;
             }
-            steps.push(`⤷ SESSION TOKENS: ${genToken('flw')}, ${genToken('acc')}`);
-            steps.push(`⤷ SIMULATION RESPONSE: {"code":202,"message":"queued for processing","fake_injection":true}`);
-            steps.push(`✓ [SIMULATED] No real followers added. Local preview only.`);
-            return steps.join('\n');
-        }
-
-        // simulation core for likes
-        function simulateLikes(videoId, count) {
-            const reqId = Date.now().toString(36) + Math.random().toString(36).substr(3, 5);
-            let steps = [];
-            steps.push(`❤️ TIKTOK LIKE INJECTOR [REQ: ${reqId}]`);
-            steps.push(`⤷ TARGET VIDEO ID: ${videoId}`);
-            steps.push(`⤷ HEARTS REQUESTED: ${count.toLocaleString()} likes`);
-            steps.push(`⤷ SPOOFING USER AGENTS: rotating 256 proxies`);
-            for (let i = 1; i <= 4; i++) {
-                let chunk = Math.floor(count / 4) * i;
-                steps.push(`   ⤷ BURST ${i}/4 : ${chunk.toLocaleString()} likes dispatched (delay 0ms)`);
+            let html = '';
+            for (let i = 0; i < accounts.length; i++) {
+                const acc = accounts[i];
+                html += `
+                    <div class="account-card" id="acc-${i}">
+                        <div class="line"><span class="label">🌐 IP:</span> ${acc.ip} <span style="color:#6b7280;">(generator used)</span></div>
+                        <div class="line"><span class="label">👤 USER:</span> ${acc.username}</div>
+                        <div class="line"><span class="label">🔑 PWD:</span> ${acc.password} 
+                            <button class="copy-btn" data-copy="${acc.password}" data-type="pwd">Copy Pwd</button>
+                        </div>
+                        <div class="line"><span class="label">🎫 TOKEN:</span> <span class="token-text">${acc.token}</span>
+                            <button class="copy-btn" data-copy="${acc.token}" data-type="token">Copy Token</button>
+                        </div>
+                        <div class="line"><span class="label">⏱️ CREATED:</span> ${acc.timestamp}</div>
+                    </div>
+                `;
             }
-            steps.push(`⤷ LIKE SIGNATURE: ${genToken('lks')}`);
-            steps.push(`⤷ MOCK RESPONSE: {"status":"accepted","estimated_time":"instant (demo mode)"}`);
-            steps.push(`⚠️ simulated environment – no actual TikTok likes were sent.`);
-            return steps.join('\n');
+            outputArea.innerHTML = html;
+            
+            // attach copy handlers
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const copyValue = btn.getAttribute('data-copy');
+                    if (copyValue) {
+                        copyToClipboard(copyValue, btn);
+                    }
+                });
+            });
         }
 
-        function simulateBoth(username, videoId, totalCount) {
-            const halfLikes = Math.floor(totalCount / 2);
-            const halfFollowers = totalCount - halfLikes;
-            let output = [];
-            output.push(`🌀 COMBO INJECTION (FOLLOWERS + LIKES) — total units: ${totalCount.toLocaleString()}`);
-            output.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-            output.push(`[FOLLOWERS PART] for @${username} : ${halfFollowers.toLocaleString()}`);
-            output.push(simulateFollowers(username, halfFollowers));
-            output.push(`\n[LIKES PART] for video ${videoId} : ${halfLikes.toLocaleString()}`);
-            output.push(simulateLikes(videoId, halfLikes));
-            output.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-            output.push(`✓ DUAL INJECTION SIMULATION FINISHED`);
-            return output.join('\n');
-        }
-
-        function runInjection() {
-            let profileRaw = profileInput.value;
-            let videoRaw = videoInput.value;
+        function generateAccounts() {
+            let count = parseInt(accCountInput.value, 10);
+            if (isNaN(count)) count = 5;
+            if (count < 1) count = 1;
+            if (count > 50) count = 50;
+            accCountInput.value = count;
             
-            let username = extractUsernameFromProfile(profileRaw);
-            let videoIdent = extractVideoIdentifier(videoRaw);
+            const mode = ipModeSelect.value;
+            const accounts = [];
+            const timestampBase = Date.now();
             
-            let amount = parseInt(amountSlider.value, 10);
-            if (isNaN(amount)) amount = 10000;
-            if (amount < 500) amount = 500;
-            if (amount > 500000) amount = 500000;
-            amountSlider.value = amount;
-            updateAmountDisplay();
-
-            let resultText = "";
-            if (currentMode === 'followers') {
-                if (!username || username === "anonymous") username = "tiktok_user";
-                resultText = simulateFollowers(username, amount);
-            } 
-            else if (currentMode === 'likes') {
-                if (!videoIdent || videoIdent === "unknown_video") videoIdent = "demo_video_000";
-                resultText = simulateLikes(videoIdent, amount);
-            } 
-            else { // both mode
-                if (!username || username === "anonymous") username = "profile_user";
-                if (!videoIdent || videoIdent === "unknown_video") videoIdent = "demo_video_999";
-                resultText = simulateBoth(username, videoIdent, amount);
+            for (let i = 0; i < count; i++) {
+                let ipUsed = "";
+                if (mode === "random") {
+                    ipUsed = getRandomIpFromPool();
+                } else if (mode === "sequential") {
+                    ipUsed = getSequentialIp(i + 1);
+                } else { // tor mode
+                    ipUsed = getTorSimIp();
+                }
+                
+                const username = generateRandomUsername(i);
+                const password = generateRandomPassword();
+                const uniqueTimestamp = timestampBase + i;
+                const token = generateToken(username, ipUsed, uniqueTimestamp);
+                
+                accounts.push({
+                    ip: ipUsed,
+                    username: username,
+                    password: password,
+                    token: token,
+                    timestamp: new Date(uniqueTimestamp).toISOString().replace('T', ' ').substring(0, 19)
+                });
             }
             
-            resultDiv.style.display = 'block';
-            resultDiv.innerText = resultText;
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            renderAccounts(accounts);
+            genStatusSpan.innerText = `✅ Generated ${accounts.length} accounts (mock)`;
+            countDisplaySpan.innerText = `${accounts.length} accounts · ${mode} IP mode`;
+            
+            // log to console for debug
+            console.log("[GENERATOR] Accounts created (simulated):", accounts.map(a => ({user: a.username, ip: a.ip})));
         }
-
-        injectBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            runInjection();
-        });
+        
+        generateBtn.addEventListener('click', generateAccounts);
+        
+        // initial demo generation
+        generateAccounts();
     })();
 </script>
 </body>
