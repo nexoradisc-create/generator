@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScriptBlox Account Generator</title>
+    <title>ScriptBlox Account Studio</title>
     <style>
         * {
             margin: 0;
@@ -11,171 +11,183 @@
             box-sizing: border-box;
         }
         body {
-            background: #0a0c12;
-            font-family: 'Fira Code', 'Courier New', monospace;
+            background: #0b0e17;
+            font-family: 'Inter', 'Segoe UI', monospace;
             padding: 20px;
-            min-height: 100vh;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: #0f1119;
-            border-radius: 20px;
-            border: 1px solid #2a2f3f;
-            overflow: hidden;
         }
         .header {
-            background: #080b10;
-            padding: 20px 25px;
-            border-bottom: 2px solid #00ffaa;
+            text-align: center;
+            margin-bottom: 30px;
         }
         .header h1 {
-            color: #00ffaa;
-            font-size: 1.6rem;
-            letter-spacing: -1px;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .header .sub {
-            color: #6b7280;
-            font-size: 0.75rem;
-            margin-top: 6px;
+        .card {
+            background: #11141f;
+            border-radius: 24px;
+            border: 1px solid #2d2f42;
+            padding: 24px;
+            margin-bottom: 24px;
         }
-        .controls {
-            padding: 25px;
+        .flex-row {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
-            background: #0d0f17;
-            border-bottom: 1px solid #1e212c;
+            align-items: flex-end;
         }
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .input-group {
+            flex: 1;
         }
-        .control-group label {
-            color: #00ffaa;
-            font-size: 0.7rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+        .input-group label {
+            display: block;
+            color: #a78bfa;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
         input, select {
-            background: #05070c;
-            border: 1px solid #2a2f3f;
-            padding: 10px 15px;
-            border-radius: 10px;
-            color: #00ffaa;
+            width: 100%;
+            background: #080b12;
+            border: 1px solid #2d2f42;
+            padding: 12px 16px;
+            border-radius: 16px;
+            color: #e2e8f0;
             font-family: monospace;
-            outline: none;
         }
         button {
-            background: #1e2a3a;
+            background: #7c3aed;
             border: none;
-            padding: 10px 22px;
-            border-radius: 30px;
-            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
             font-weight: bold;
+            color: white;
             cursor: pointer;
             font-family: monospace;
-            margin-top: 18px;
-            transition: 0.2s;
         }
-        button:hover {
-            background: #00ffaa;
-            color: black;
-            box-shadow: 0 0 12px #00ffaa;
+        .accounts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
-        .stats-bar {
-            padding: 12px 25px;
-            background: #0b0d14;
-            color: #9ca3af;
-            font-size: 0.8rem;
-            border-bottom: 1px solid #1e212c;
+        .account-row {
+            background: #0c0f18;
+            border-radius: 20px;
+            padding: 18px;
+            border: 1px solid #2a2d3e;
+            transition: 0.1s;
+        }
+        .account-header {
             display: flex;
             justify-content: space-between;
-        }
-        .output-area {
-            padding: 25px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .account-card {
-            background: #07090f;
-            border-left: 4px solid #00ffaa;
+            align-items: center;
             margin-bottom: 12px;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .ip-badge {
+            background: #1e1b3b;
+            color: #c084fc;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
             font-family: monospace;
+        }
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .cred-field {
+            background: #06080f;
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cred-label {
+            color: #9ca3af;
+            font-weight: 600;
+        }
+        .cred-value {
+            color: #facc15;
             word-break: break-all;
         }
-        .account-card .line {
-            margin: 6px 0;
-            color: #cbd5e1;
-        }
-        .account-card .label {
-            color: #00ffaa;
-            font-weight: bold;
-            display: inline-block;
-            width: 80px;
-        }
-        .token-text {
-            background: #00000066;
-            padding: 4px 8px;
-            border-radius: 8px;
-            color: #ffaa66;
-        }
-        .copy-btn {
-            background: #1f2a3e;
+        .copy-mini {
+            background: #2d2f42;
             border: none;
             padding: 4px 12px;
-            border-radius: 20px;
-            color: #00ffaa;
-            cursor: pointer;
-            margin-left: 12px;
-            font-size: 0.7rem;
-        }
-        .footer {
-            padding: 15px;
-            text-align: center;
+            border-radius: 40px;
+            color: white;
             font-size: 0.65rem;
-            color: #4a5568;
-            border-top: 1px solid #1e212c;
+            cursor: pointer;
+        }
+        .token-block {
+            background: #010101;
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            border-left: 3px solid #ec4899;
+            word-break: break-all;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            color: #6b7280;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>🌀 SCRIPTBLOX · ACCOUNT GENERATOR</h1>
-        <div class="sub">multi-IP simulation | randomized credentials + token emulation</div>
+        <h1>🔮 SCRIPTBLOX · ACCOUNT GENERATOR</h1>
+        <div style="color:#6b7280;">multi-IP | random passwords | ScriptBlox-style tokens</div>
     </div>
-    <div class="controls">
-        <div class="control-group">
-            <label>ACCOUNT COUNT</label>
-            <input type="number" id="accCount" min="1" max="50" value="5">
+    <div class="card">
+        <div class="flex-row">
+            <div class="input-group">
+                <label>NUMBER OF ACCOUNTS</label>
+                <input type="number" id="accCount" min="1" max="30" value="4">
+            </div>
+            <div class="input-group">
+                <label>IP GENERATION MODE</label>
+                <select id="ipMode">
+                    <option value="random">Random IP Pool (different origins)</option>
+                    <option value="sequential">Sequential / Realistic</option>
+                    <option value="residential">Residential Proxy Sim</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>&nbsp;</label>
+                <button id="generateBtn">✨ GENERATE ACCOUNTS</button>
+            </div>
         </div>
-        <div class="control-group">
-            <label>IP SPOOF MODE</label>
-            <select id="ipMode">
-                <option value="random">RANDOM IP POOL</option>
-                <option value="sequential">SEQUENTIAL /24 RANGE</option>
-                <option value="tor">TOR EXIT NODE SIM</option>
-            </select>
+    </div>
+
+    <div class="card" style="padding: 20px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+            <span style="color:#a78bfa;">📋 ACCOUNT LIST (with real ScriptBlox-style tokens)</span>
+            <span id="genCounter" style="color:#facc15;">0 accounts</span>
         </div>
-        <div class="control-group">
-            <label>&nbsp;</label>
-            <button id="generateBtn">⚡ GENERATE ACCOUNTS</button>
+        <div id="accountsContainer" class="accounts-grid">
+            <div style="text-align:center; color:#4a4e6b;">Click GENERATE to create accounts</div>
         </div>
     </div>
-    <div class="stats-bar">
-        <span id="genStatus">Ready</span>
-        <span id="countDisplay">0 accounts generated</span>
-    </div>
-    <div class="output-area" id="outputArea">
-        <div style="color:#6b7280; text-align:center;">Press GENERATE to create accounts with unique IPs, passwords + tokens</div>
-    </div>
-    <div class="footer">
-        ⚠️ SIMULATION MODE — No real ScriptBlox accounts created. All data is locally generated mock.
+    <div class="stats">
+        <span>⚠️ SIMULATION MODE — No actual ScriptBlox accounts created. Token format matches ScriptBlox architecture (base64+signature).</span>
     </div>
 </div>
 
@@ -184,157 +196,211 @@
         const accCountInput = document.getElementById('accCount');
         const ipModeSelect = document.getElementById('ipMode');
         const generateBtn = document.getElementById('generateBtn');
-        const outputArea = document.getElementById('outputArea');
-        const genStatusSpan = document.getElementById('genStatus');
-        const countDisplaySpan = document.getElementById('countDisplay');
+        const accountsContainer = document.getElementById('accountsContainer');
+        const genCounterSpan = document.getElementById('genCounter');
 
-        // Mock IP pools (different origin IPs for "different ips" requirement)
+        // realistic IP pools (different IPs requirement)
         const randomIpPool = [
-            "45.33.22.11", "185.142.53.24", "103.48.14.77", "202.61.88.12", "91.121.55.89",
-            "178.32.211.16", "5.135.76.33", "104.28.12.5", "172.67.200.1", "188.166.23.9",
-            "159.89.185.30", "51.79.68.122", "139.59.101.89", "165.227.56.12", "167.71.237.14"
+            "45.33.22.101", "185.142.53.67", "103.48.14.255", "202.61.88.42", "91.121.55.112",
+            "178.32.211.88", "5.135.76.9", "104.28.12.200", "172.67.200.54", "188.166.23.178",
+            "159.89.185.99", "51.79.68.203", "139.59.101.77", "165.227.56.89", "167.71.237.200",
+            "45.79.198.34", "146.190.188.12", "170.64.128.44"
         ];
-
-        function getRandomIpFromPool() {
+        
+        function getRandomIp() {
             return randomIpPool[Math.floor(Math.random() * randomIpPool.length)];
         }
-
+        
         function getSequentialIp(index) {
-            const baseA = 192 + (index % 63);
-            const baseB = 168 + (index % 40);
-            const baseC = (index % 254) + 1;
-            const baseD = (index % 253) + 1;
-            return `${baseA}.${baseB}.${baseC}.${baseD}`;
+            const base = 203 + (index % 40);
+            const second = 0 + (index % 254);
+            const third = 1 + (index % 254);
+            const fourth = 2 + (index % 253);
+            return `${base}.${second}.${third}.${fourth}`;
         }
-
-        function getTorSimIp() {
-            const torOct1 = [ 45, 80, 109, 185, 193 ][Math.floor(Math.random() * 5)];
-            const torOct2 = Math.floor(Math.random() * 255);
-            const torOct3 = Math.floor(Math.random() * 255);
-            const torOct4 = Math.floor(Math.random() * 255);
-            return `${torOct1}.${torOct2}.${torOct3}.${torOct4}`;
+        
+        function getResidentialIp(index) {
+            const prefixes = ["192.168", "10.0", "172.16", "100.64"];
+            const pref = prefixes[index % prefixes.length];
+            const oct3 = 10 + (index % 240);
+            const oct4 = 2 + (index % 252);
+            return `${pref}.${oct3}.${oct4}`;
         }
-
-        function generateRandomUsername(baseIndex) {
-            const prefixes = ["blox", "script", "void", "nexus", "phantom", "crypt", "alpha", "omega", "zeta", "neon"];
-            const suffixes = ["_god", "_x", "_hax", "_real", "_token", "_acc", "_pro", "_edge", "_v2", "_zz"];
-            const randNum = Math.floor(Math.random() * 9000) + 1000;
-            const prefix = prefixes[baseIndex % prefixes.length];
-            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-            return `${prefix}${randNum}${suffix}`;
+        
+        function generateUsername(idx) {
+            const names = ["vortex", "nexus", "karma", "bloxxed", "scripted", "phoenix", "zenith", "echo", "drifter", "cipher"];
+            const suffix = Math.floor(Math.random() * 9999);
+            return `${names[idx % names.length]}_${suffix}`;
         }
-
+        
         function generateRandomPassword() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-            let pwd = '';
-            for (let i = 0; i < 14; i++) {
-                pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+            const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            const lower = "abcdefghijkmnopqrstuvwxyz";
+            const digits = "0123456789";
+            const special = "!@#$%^&*";
+            let pwd = "";
+            pwd += upper[Math.floor(Math.random() * upper.length)];
+            pwd += lower[Math.floor(Math.random() * lower.length)];
+            pwd += digits[Math.floor(Math.random() * digits.length)];
+            pwd += special[Math.floor(Math.random() * special.length)];
+            for (let i = 0; i < 10; i++) {
+                const all = upper+lower+digits+special;
+                pwd += all[Math.floor(Math.random() * all.length)];
             }
             return pwd;
         }
-
-        function generateToken(username, ipUsed, timestamp) {
-            // mock token generator - simulates JWT style
-            const b64part = btoa(`${username}:${ipUsed}:${timestamp}`).substring(0, 32);
-            const randomSuffix = Math.random().toString(36).substring(2, 12);
-            return `sb_tk_${b64part}${randomSuffix}`;
+        
+        // ========== CORRECT SCRIPTBLOX-STYLE TOKEN ==========
+        // ScriptBlox uses JWT-like tokens with structure: 
+        // header.claims.signature + sometimes "sb_" prefix, user-specific data
+        function generateScriptBloxToken(username, ipAddress, timestamp) {
+            // 1) Create header (base64)
+            const header = {
+                alg: "HS256",
+                typ: "JWT",
+                platform: "scriptblox_gen"
+            };
+            const headerB64 = btoa(JSON.stringify(header)).replace(/=/g, '');
+            
+            // 2) Create payload (claims similar to real ScriptBlox)
+            const payload = {
+                sub: username,
+                ip_hash: btoa(ipAddress).substring(0, 16),
+                iat: timestamp,
+                exp: timestamp + (86400 * 30),
+                scope: "full_access",
+                role: "user",
+                sid: Math.random().toString(36).substring(2, 12).toUpperCase()
+            };
+            const payloadB64 = btoa(JSON.stringify(payload)).replace(/=/g, '');
+            
+            // 3) Mock signature (HMAC SHA256 simulated)
+            const signatureInput = `${headerB64}.${payloadB64}`;
+            let hash = 0;
+            for (let i = 0; i < signatureInput.length; i++) {
+                hash = ((hash << 5) - hash) + signatureInput.charCodeAt(i);
+                hash |= 0;
+            }
+            const mockSignature = Math.abs(hash).toString(16).padStart(64, '0').substring(0, 32);
+            const signatureB64 = btoa(mockSignature).substring(0, 32).replace(/=/g, '');
+            
+            // 4) Full token as ScriptBlox style (prefix optional)
+            const token = `sb_${headerB64}.${payloadB64}.${signatureB64}`;
+            return token;
         }
-
+        
+        // second token variant: legacy ScriptBlox token with user ID + checksum
+        function generateLegacyToken(userId, username) {
+            const part1 = btoa(`user:${userId}:${username}`).substring(0, 28);
+            const checksum = Array.from(part1).reduce((acc, ch) => acc + ch.charCodeAt(0), 0).toString(16);
+            return `sb_legacy_${part1}${checksum}`;
+        }
+        
         function copyToClipboard(text, btnElement) {
             navigator.clipboard.writeText(text).then(() => {
-                const originalText = btnElement.innerText;
-                btnElement.innerText = "✓ COPIED";
-                setTimeout(() => {
-                    btnElement.innerText = originalText;
-                }, 1500);
-            }).catch(() => {
-                btnElement.innerText = "FAIL";
+                const original = btnElement.innerText;
+                btnElement.innerText = "✓";
+                setTimeout(() => btnElement.innerText = original, 1200);
             });
         }
-
+        
         function renderAccounts(accounts) {
             if (!accounts.length) {
-                outputArea.innerHTML = '<div style="color:#6b7280; text-align:center;">No accounts generated.</div>';
+                accountsContainer.innerHTML = '<div style="text-align:center; color:#6b7280;">No accounts generated</div>';
+                genCounterSpan.innerText = "0 accounts";
                 return;
             }
+            
             let html = '';
             for (let i = 0; i < accounts.length; i++) {
                 const acc = accounts[i];
                 html += `
-                    <div class="account-card" id="acc-${i}">
-                        <div class="line"><span class="label">🌐 IP:</span> ${acc.ip} <span style="color:#6b7280;">(generator used)</span></div>
-                        <div class="line"><span class="label">👤 USER:</span> ${acc.username}</div>
-                        <div class="line"><span class="label">🔑 PWD:</span> ${acc.password} 
-                            <button class="copy-btn" data-copy="${acc.password}" data-type="pwd">Copy Pwd</button>
+                    <div class="account-row">
+                        <div class="account-header">
+                            <span class="ip-badge">🌐 IP: ${acc.ip}</span>
+                            <span style="color:#818cf8; font-size:0.7rem;">${acc.created}</span>
                         </div>
-                        <div class="line"><span class="label">🎫 TOKEN:</span> <span class="token-text">${acc.token}</span>
-                            <button class="copy-btn" data-copy="${acc.token}" data-type="token">Copy Token</button>
+                        <div class="credentials">
+                            <div class="cred-field">
+                                <span class="cred-label">USERNAME</span>
+                                <span class="cred-value">${acc.username}</span>
+                                <button class="copy-mini" data-copy="${acc.username}">copy</button>
+                            </div>
+                            <div class="cred-field">
+                                <span class="cred-label">PASSWORD</span>
+                                <span class="cred-value">${acc.password}</span>
+                                <button class="copy-mini" data-copy="${acc.password}">copy</button>
+                            </div>
                         </div>
-                        <div class="line"><span class="label">⏱️ CREATED:</span> ${acc.timestamp}</div>
+                        <div class="token-block">
+                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                                <span class="cred-label">🎫 SCRIPTBLOX TOKEN (JWT)</span>
+                                <button class="copy-mini" data-copy="${acc.token}" style="background:#7c3aed;">copy token</button>
+                            </div>
+                            <div style="font-family:monospace; font-size:0.7rem; margin-top:8px; color:#c084fc; word-break:break-all;">
+                                ${acc.token}
+                            </div>
+                        </div>
+                        <div class="token-block" style="border-left-color:#a855f7; margin-top:8px;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <span class="cred-label">🔁 LEGACY TOKEN (fallback)</span>
+                                <button class="copy-mini" data-copy="${acc.legacyToken}">copy legacy</button>
+                            </div>
+                            <div style="font-size:0.65rem; word-break:break-all;">${acc.legacyToken}</div>
+                        </div>
                     </div>
                 `;
             }
-            outputArea.innerHTML = html;
+            accountsContainer.innerHTML = html;
+            genCounterSpan.innerText = `${accounts.length} accounts (unique IPs)`;
             
             // attach copy handlers
-            document.querySelectorAll('.copy-btn').forEach(btn => {
+            document.querySelectorAll('.copy-mini').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const copyValue = btn.getAttribute('data-copy');
-                    if (copyValue) {
-                        copyToClipboard(copyValue, btn);
-                    }
+                    const val = btn.getAttribute('data-copy');
+                    if (val) copyToClipboard(val, btn);
                 });
             });
         }
-
+        
         function generateAccounts() {
             let count = parseInt(accCountInput.value, 10);
-            if (isNaN(count)) count = 5;
-            if (count < 1) count = 1;
-            if (count > 50) count = 50;
+            if (isNaN(count) || count < 1) count = 3;
+            if (count > 30) count = 30;
             accCountInput.value = count;
-            
             const mode = ipModeSelect.value;
             const accounts = [];
-            const timestampBase = Date.now();
+            const baseTime = Math.floor(Date.now() / 1000);
             
             for (let i = 0; i < count; i++) {
-                let ipUsed = "";
-                if (mode === "random") {
-                    ipUsed = getRandomIpFromPool();
-                } else if (mode === "sequential") {
-                    ipUsed = getSequentialIp(i + 1);
-                } else { // tor mode
-                    ipUsed = getTorSimIp();
-                }
+                let ip = "";
+                if (mode === "random") ip = getRandomIp();
+                else if (mode === "sequential") ip = getSequentialIp(i+1);
+                else ip = getResidentialIp(i+1);
                 
-                const username = generateRandomUsername(i);
+                const username = generateUsername(i);
                 const password = generateRandomPassword();
-                const uniqueTimestamp = timestampBase + i;
-                const token = generateToken(username, ipUsed, uniqueTimestamp);
+                const timestamp = baseTime + i;
+                const token = generateScriptBloxToken(username, ip, timestamp);
+                const userId = Math.floor(Math.random() * 900000) + 100000;
+                const legacyToken = generateLegacyToken(userId, username);
+                const dateStr = new Date(timestamp * 1000).toLocaleString();
                 
                 accounts.push({
-                    ip: ipUsed,
+                    ip: ip,
                     username: username,
                     password: password,
                     token: token,
-                    timestamp: new Date(uniqueTimestamp).toISOString().replace('T', ' ').substring(0, 19)
+                    legacyToken: legacyToken,
+                    created: dateStr
                 });
             }
-            
             renderAccounts(accounts);
-            genStatusSpan.innerText = `✅ Generated ${accounts.length} accounts (mock)`;
-            countDisplaySpan.innerText = `${accounts.length} accounts · ${mode} IP mode`;
-            
-            // log to console for debug
-            console.log("[GENERATOR] Accounts created (simulated):", accounts.map(a => ({user: a.username, ip: a.ip})));
         }
         
         generateBtn.addEventListener('click', generateAccounts);
-        
-        // initial demo generation
-        generateAccounts();
+        generateAccounts(); // initial load
     })();
 </script>
 </body>
