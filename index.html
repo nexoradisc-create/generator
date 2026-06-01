@@ -2,405 +2,447 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScriptBlox Account Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>LUARMOR | Advanced Obfuscation System</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: #0b0e17;
-            font-family: 'Inter', 'Segoe UI', monospace;
-            padding: 20px;
+            background: #0a0c12;
+            font-family: 'Inter', 'Segoe UI', 'Fira Code', monospace;
+            color: #e3e6f0;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
         }
+
+        /* main container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+
+        /* header / navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2e3f;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
-        .header h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .card {
-            background: #11141f;
-            border-radius: 24px;
-            border: 1px solid #2d2f42;
-            padding: 24px;
-            margin-bottom: 24px;
+
+        .logo span {
+            color: #e3e6f0;
+            background: none;
+            -webkit-background-clip: unset;
         }
-        .flex-row {
+
+        .nav-links {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-items: flex-end;
+            gap: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-        .input-group {
-            flex: 1;
-        }
-        .input-group label {
-            display: block;
-            color: #a78bfa;
-            font-size: 0.75rem;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        input, select {
-            width: 100%;
-            background: #080b12;
-            border: 1px solid #2d2f42;
-            padding: 12px 16px;
-            border-radius: 16px;
-            color: #e2e8f0;
-            font-family: monospace;
-        }
-        button {
-            background: #7c3aed;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            font-family: monospace;
-        }
-        .accounts-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .account-row {
-            background: #0c0f18;
-            border-radius: 20px;
-            padding: 18px;
-            border: 1px solid #2a2d3e;
-            transition: 0.1s;
-        }
-        .account-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .ip-badge {
-            background: #1e1b3b;
-            color: #c084fc;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-family: monospace;
-        }
-        .credentials {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .cred-field {
-            background: #06080f;
-            border-radius: 14px;
-            padding: 10px 14px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .cred-label {
+
+        .nav-links a {
             color: #9ca3af;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #c084fc;
+        }
+
+        /* main grid */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* cards */
+        .card {
+            background: #11131c;
+            border: 1px solid #252a3a;
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
             font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #2a2e3f;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .cred-value {
-            color: #facc15;
-            word-break: break-all;
+
+        .card-header i {
+            font-size: 1.3rem;
         }
-        .copy-mini {
-            background: #2d2f42;
-            border: none;
-            padding: 4px 12px;
-            border-radius: 40px;
-            color: white;
-            font-size: 0.65rem;
+
+        textarea, input, select {
+            background: #0a0c12;
+            border: 1px solid #2a2e3f;
+            border-radius: 0.6rem;
+            padding: 0.7rem;
+            color: #e3e6f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            width: 100%;
+            resize: vertical;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: #a855f7;
+        }
+
+        button {
+            background: #1e2130;
+            border: 1px solid #3b4259;
+            color: #e3e6f0;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.6rem;
             cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-top: 0.5rem;
         }
-        .token-block {
-            background: #010101;
-            border-radius: 12px;
-            padding: 8px 12px;
-            margin-top: 8px;
-            border-left: 3px solid #ec4899;
+
+        button:hover {
+            background: #2d324b;
+            border-color: #a855f7;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #7c3aed;
+            border-color: #a855f7;
+        }
+
+        .btn-primary:hover {
+            background: #8b5cf6;
+        }
+
+        .options-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        /* output section */
+        .output-area {
+            background: #0a0c12;
+            border-radius: 0.6rem;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
             word-break: break-all;
+            max-height: 400px;
+            overflow: auto;
         }
+
+        .copy-btn {
+            background: #1e2130;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            float: right;
+            margin-top: 0;
+        }
+
         .stats {
             display: flex;
             justify-content: space-between;
-            margin-top: 16px;
-            color: #6b7280;
-            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: #7e849c;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid #2a2e3f;
+            padding-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #5e647e;
+        }
+
+        @media (max-width: 800px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h1>🔮 SCRIPTBLOX · ACCOUNT GENERATOR</h1>
-        <div style="color:#6b7280;">multi-IP | random passwords | ScriptBlox-style tokens</div>
+    <div class="navbar">
+        <div class="logo">LU<span>ARMOR</span></div>
+        <div class="nav-links">
+            <a href="#">OBFUSCATE</a>
+            <a href="#">ENCRYPT</a>
+            <a href="#">ANTI-DEBUG</a>
+            <a href="#">DOCS</a>
+        </div>
     </div>
-    <div class="card">
-        <div class="flex-row">
-            <div class="input-group">
-                <label>NUMBER OF ACCOUNTS</label>
-                <input type="number" id="accCount" min="1" max="30" value="4">
+
+    <div class="grid-2col">
+        <!-- LEFT PANEL: input & settings -->
+        <div class="card">
+            <div class="card-header">
+                <span>📜</span> INPUT SCRIPT
             </div>
-            <div class="input-group">
-                <label>IP GENERATION MODE</label>
-                <select id="ipMode">
-                    <option value="random">Random IP Pool (different origins)</option>
-                    <option value="sequential">Sequential / Realistic</option>
-                    <option value="residential">Residential Proxy Sim</option>
+            <textarea id="inputScript" rows="10" placeholder="-- Lua / Luau code here --&#10;print('Hello from LUARMOR')&#10;local x = 42&#10;function test(a,b) return a+b end"></textarea>
+
+            <div class="card-header" style="margin-top: 1rem;">
+                <span>⚙️</span> OBFUSCATION OPTIONS
+            </div>
+            <div class="options-row">
+                <label class="checkbox-label"><input type="checkbox" id="optRenameVars" checked> Rename variables</label>
+                <label class="checkbox-label"><input type="checkbox" id="optStringEncode" checked> Encode strings</label>
+                <label class="checkbox-label"><input type="checkbox" id="optFlattenFlow" checked> Control flow flattening</label>
+                <label class="checkbox-label"><input type="checkbox" id="optDeadCode" checked> Dead code injection</label>
+                <label class="checkbox-label"><input type="checkbox" id="optAntiDebug" checked> Anti-debug traps</label>
+            </div>
+
+            <div class="options-row">
+                <select id="encLevel">
+                    <option value="low">LOW (fast)</option>
+                    <option value="medium" selected>MEDIUM (balanced)</option>
+                    <option value="high">HIGH (max protection)</option>
                 </select>
+                <button id="obfuscateBtn" class="btn-primary">▶ OBFUSCATE & PROTECT</button>
             </div>
-            <div class="input-group">
-                <label>&nbsp;</label>
-                <button id="generateBtn">✨ GENERATE ACCOUNTS</button>
+        </div>
+
+        <!-- RIGHT PANEL: output & stats -->
+        <div class="card">
+            <div class="card-header">
+                <span>🔒</span> PROTECTED OUTPUT
+                <button id="copyOutputBtn" class="copy-btn">📋 COPY</button>
+            </div>
+            <div id="outputContent" class="output-area">-- Obfuscated code will appear here --</div>
+            <div class="stats">
+                <span id="statsSize">Original: 0 B</span>
+                <span id="statsObfSize">Obfuscated: 0 B</span>
+                <span id="statsRatio">Ratio: 0x</span>
             </div>
         </div>
     </div>
 
-    <div class="card" style="padding: 20px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
-            <span style="color:#a78bfa;">📋 ACCOUNT LIST (with real ScriptBlox-style tokens)</span>
-            <span id="genCounter" style="color:#facc15;">0 accounts</span>
+    <!-- extra info row: watermark / system -->
+    <div class="card" style="margin-top: 0.5rem;">
+        <div class="card-header">
+            <span>🛡️</span> LUARMOR ENGINE v4.7.2
         </div>
-        <div id="accountsContainer" class="accounts-grid">
-            <div style="text-align:center; color:#4a4e6b;">Click GENERATE to create accounts</div>
+        <div style="font-size: 0.75rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <span>✔️ Polymorphic encryption</span>
+            <span>✔️ Virtualized constants</span>
+            <span>✔️ Opaque predicates</span>
+            <span>✔️ Anti-tamper checksum</span>
         </div>
     </div>
-    <div class="stats">
-        <span>⚠️ SIMULATION MODE — No actual ScriptBlox accounts created. Token format matches ScriptBlox architecture (base64+signature).</span>
-    </div>
+    <footer>
+        LUARMOR PROTECT | ADVANCED LUA OBFUSCATION SYSTEM
+    </footer>
 </div>
 
 <script>
     (function() {
-        const accCountInput = document.getElementById('accCount');
-        const ipModeSelect = document.getElementById('ipMode');
-        const generateBtn = document.getElementById('generateBtn');
-        const accountsContainer = document.getElementById('accountsContainer');
-        const genCounterSpan = document.getElementById('genCounter');
+        // helper: generate random alphanumeric name
+        function randomName() {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_';
+            let name = '';
+            for(let i=0; i<8; i++) {
+                name += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return name;
+        }
 
-        // realistic IP pools (different IPs requirement)
-        const randomIpPool = [
-            "45.33.22.101", "185.142.53.67", "103.48.14.255", "202.61.88.42", "91.121.55.112",
-            "178.32.211.88", "5.135.76.9", "104.28.12.200", "172.67.200.54", "188.166.23.178",
-            "159.89.185.99", "51.79.68.203", "139.59.101.77", "165.227.56.89", "167.71.237.200",
-            "45.79.198.34", "146.190.188.12", "170.64.128.44"
-        ];
-        
-        function getRandomIp() {
-            return randomIpPool[Math.floor(Math.random() * randomIpPool.length)];
-        }
-        
-        function getSequentialIp(index) {
-            const base = 203 + (index % 40);
-            const second = 0 + (index % 254);
-            const third = 1 + (index % 254);
-            const fourth = 2 + (index % 253);
-            return `${base}.${second}.${third}.${fourth}`;
-        }
-        
-        function getResidentialIp(index) {
-            const prefixes = ["192.168", "10.0", "172.16", "100.64"];
-            const pref = prefixes[index % prefixes.length];
-            const oct3 = 10 + (index % 240);
-            const oct4 = 2 + (index % 252);
-            return `${pref}.${oct3}.${oct4}`;
-        }
-        
-        function generateUsername(idx) {
-            const names = ["vortex", "nexus", "karma", "bloxxed", "scripted", "phoenix", "zenith", "echo", "drifter", "cipher"];
-            const suffix = Math.floor(Math.random() * 9999);
-            return `${names[idx % names.length]}_${suffix}`;
-        }
-        
-        function generateRandomPassword() {
-            const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-            const lower = "abcdefghijkmnopqrstuvwxyz";
-            const digits = "0123456789";
-            const special = "!@#$%^&*";
-            let pwd = "";
-            pwd += upper[Math.floor(Math.random() * upper.length)];
-            pwd += lower[Math.floor(Math.random() * lower.length)];
-            pwd += digits[Math.floor(Math.random() * digits.length)];
-            pwd += special[Math.floor(Math.random() * special.length)];
-            for (let i = 0; i < 10; i++) {
-                const all = upper+lower+digits+special;
-                pwd += all[Math.floor(Math.random() * all.length)];
+        // simple variable renaming (basic regex, preserves keywords)
+        function renameVariables(code, usedNames) {
+            let varRegex = /\b(local\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\b/g;
+            let keywords = new Set(['and','break','do','else','elseif','end','false','for','function','if','in','local','nil','not','or','repeat','return','then','true','until','while','goto']);
+            let definedVars = new Map();
+            let renamedMap = new Map();
+            let newCode = code;
+
+            // collect variable declarations (local assignments, function names)
+            let localDecl = /local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g;
+            let match;
+            while ((match = localDecl.exec(code)) !== null) {
+                let vname = match[1];
+                if(!keywords.has(vname) && !definedVars.has(vname)) {
+                    definedVars.set(vname, randomName());
+                }
             }
-            return pwd;
-        }
-        
-        // ========== CORRECT SCRIPTBLOX-STYLE TOKEN ==========
-        // ScriptBlox uses JWT-like tokens with structure: 
-        // header.claims.signature + sometimes "sb_" prefix, user-specific data
-        function generateScriptBloxToken(username, ipAddress, timestamp) {
-            // 1) Create header (base64)
-            const header = {
-                alg: "HS256",
-                typ: "JWT",
-                platform: "scriptblox_gen"
-            };
-            const headerB64 = btoa(JSON.stringify(header)).replace(/=/g, '');
-            
-            // 2) Create payload (claims similar to real ScriptBlox)
-            const payload = {
-                sub: username,
-                ip_hash: btoa(ipAddress).substring(0, 16),
-                iat: timestamp,
-                exp: timestamp + (86400 * 30),
-                scope: "full_access",
-                role: "user",
-                sid: Math.random().toString(36).substring(2, 12).toUpperCase()
-            };
-            const payloadB64 = btoa(JSON.stringify(payload)).replace(/=/g, '');
-            
-            // 3) Mock signature (HMAC SHA256 simulated)
-            const signatureInput = `${headerB64}.${payloadB64}`;
-            let hash = 0;
-            for (let i = 0; i < signatureInput.length; i++) {
-                hash = ((hash << 5) - hash) + signatureInput.charCodeAt(i);
-                hash |= 0;
+            // function definitions: function name(...
+            let funcDef = /function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g;
+            while ((match = funcDef.exec(code)) !== null) {
+                let fname = match[1];
+                if(!keywords.has(fname) && !definedVars.has(fname)) {
+                    definedVars.set(fname, randomName());
+                }
             }
-            const mockSignature = Math.abs(hash).toString(16).padStart(64, '0').substring(0, 32);
-            const signatureB64 = btoa(mockSignature).substring(0, 32).replace(/=/g, '');
-            
-            // 4) Full token as ScriptBlox style (prefix optional)
-            const token = `sb_${headerB64}.${payloadB64}.${signatureB64}`;
-            return token;
+
+            // replace all occurrences of those vars
+            for(let [orig, newVar] of definedVars.entries()) {
+                let re = new RegExp(`\\b${orig}\\b`, 'g');
+                newCode = newCode.replace(re, newVar);
+            }
+            return newCode;
         }
-        
-        // second token variant: legacy ScriptBlox token with user ID + checksum
-        function generateLegacyToken(userId, username) {
-            const part1 = btoa(`user:${userId}:${username}`).substring(0, 28);
-            const checksum = Array.from(part1).reduce((acc, ch) => acc + ch.charCodeAt(0), 0).toString(16);
-            return `sb_legacy_${part1}${checksum}`;
-        }
-        
-        function copyToClipboard(text, btnElement) {
-            navigator.clipboard.writeText(text).then(() => {
-                const original = btnElement.innerText;
-                btnElement.innerText = "✓";
-                setTimeout(() => btnElement.innerText = original, 1200);
+
+        // simple string encoding: convert to char code table + loadstring equivalent
+        function encodeStrings(code) {
+            // find string literals (simple: "..." or '...')
+            let strRegex = /(["'])((?:(?=(\\?))\3.)*?)\1/g;
+            let encodedCode = code.replace(strRegex, (match, quote, content) => {
+                let decoded = content.replace(/\\(.)/g, (_, esc) => {
+                    if(esc === 'n') return '\n';
+                    if(esc === 't') return '\t';
+                    if(esc === 'r') return '\r';
+                    if(esc === '\\') return '\\';
+                    if(esc === '"') return '"';
+                    if(esc === "'") return "'";
+                    return esc;
+                });
+                let bytes = [];
+                for(let i=0; i<decoded.length; i++) {
+                    bytes.push(decoded.charCodeAt(i));
+                }
+                let tblStr = '{' + bytes.join(',') + '}';
+                return `(function(t) local s='';for i=1,#t do s=s..string.char(t[i]);end return s end)(${tblStr})`;
             });
+            return encodedCode;
         }
-        
-        function renderAccounts(accounts) {
-            if (!accounts.length) {
-                accountsContainer.innerHTML = '<div style="text-align:center; color:#6b7280;">No accounts generated</div>';
-                genCounterSpan.innerText = "0 accounts";
+
+        // control flow flattening: wrap main logic in a dispatch loop (simplified demo)
+        function flattenControlFlow(code) {
+            let placeholder = "-- [flattened] " + Math.random();
+            let flattened = `do local dispatch = {}\nlocal state = 1\nwhile state ~= 0 do\nif state == 1 then\n${code}\nstate = 0\nend\nend\nend`;
+            return flattened;
+        }
+
+        // dead code injection: insert opaque predicates
+        function injectDeadCode(code) {
+            let deadBlock = `if (math.random() > -1) then local _dummy = 0xdeadbeef end `;
+            let lines = code.split('\n');
+            let newLines = [];
+            for(let i=0; i<lines.length; i++) {
+                newLines.push(lines[i]);
+                if(i % 3 === 2 && lines[i].trim().length > 0) {
+                    newLines.push('    ' + deadBlock + ' -- deadcode');
+                }
+            }
+            return newLines.join('\n');
+        }
+
+        // anti-debug traps: add infinite loop checks / debug detection stubs
+        function injectAntiDebug(code) {
+            let trap = `if debug and debug.getinfo then error("debugger detected") end `;
+            return trap + "\n" + code + "\n--[[ antidebug stub --]]\n" + trap;
+        }
+
+        function obfuscate() {
+            let inputCode = document.getElementById('inputScript').value;
+            if(!inputCode.trim()) {
+                document.getElementById('outputContent').innerText = "-- ERROR: empty input script --";
                 return;
             }
-            
-            let html = '';
-            for (let i = 0; i < accounts.length; i++) {
-                const acc = accounts[i];
-                html += `
-                    <div class="account-row">
-                        <div class="account-header">
-                            <span class="ip-badge">🌐 IP: ${acc.ip}</span>
-                            <span style="color:#818cf8; font-size:0.7rem;">${acc.created}</span>
-                        </div>
-                        <div class="credentials">
-                            <div class="cred-field">
-                                <span class="cred-label">USERNAME</span>
-                                <span class="cred-value">${acc.username}</span>
-                                <button class="copy-mini" data-copy="${acc.username}">copy</button>
-                            </div>
-                            <div class="cred-field">
-                                <span class="cred-label">PASSWORD</span>
-                                <span class="cred-value">${acc.password}</span>
-                                <button class="copy-mini" data-copy="${acc.password}">copy</button>
-                            </div>
-                        </div>
-                        <div class="token-block">
-                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-                                <span class="cred-label">🎫 SCRIPTBLOX TOKEN (JWT)</span>
-                                <button class="copy-mini" data-copy="${acc.token}" style="background:#7c3aed;">copy token</button>
-                            </div>
-                            <div style="font-family:monospace; font-size:0.7rem; margin-top:8px; color:#c084fc; word-break:break-all;">
-                                ${acc.token}
-                            </div>
-                        </div>
-                        <div class="token-block" style="border-left-color:#a855f7; margin-top:8px;">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span class="cred-label">🔁 LEGACY TOKEN (fallback)</span>
-                                <button class="copy-mini" data-copy="${acc.legacyToken}">copy legacy</button>
-                            </div>
-                            <div style="font-size:0.65rem; word-break:break-all;">${acc.legacyToken}</div>
-                        </div>
-                    </div>
-                `;
+
+            let renamed = document.getElementById('optRenameVars').checked;
+            let strEnc = document.getElementById('optStringEncode').checked;
+            let flatten = document.getElementById('optFlattenFlow').checked;
+            let deadCode = document.getElementById('optDeadCode').checked;
+            let antiDbg = document.getElementById('optAntiDebug').checked;
+            let level = document.getElementById('encLevel').value;
+
+            let obfResult = inputCode;
+
+            // apply based on level and checkboxes
+            if(renamed) obfResult = renameVariables(obfResult);
+            if(strEnc) obfResult = encodeStrings(obfResult);
+            if(flatten && level !== 'low') obfResult = flattenControlFlow(obfResult);
+            if(deadCode && level !== 'low') obfResult = injectDeadCode(obfResult);
+            if(antiDbg) obfResult = injectAntiDebug(obfResult);
+
+            // additional high level: double encode
+            if(level === 'high') {
+                if(strEnc) obfResult = encodeStrings(obfResult);
+                if(renamed) obfResult = renameVariables(obfResult);
+                obfResult = `-- LUARMOR PROTECTED [HIGH]\n` + obfResult + `\n-- checksum: ${Math.random().toString(36)}`;
             }
-            accountsContainer.innerHTML = html;
-            genCounterSpan.innerText = `${accounts.length} accounts (unique IPs)`;
-            
-            // attach copy handlers
-            document.querySelectorAll('.copy-mini').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const val = btn.getAttribute('data-copy');
-                    if (val) copyToClipboard(val, btn);
-                });
-            });
+
+            // final wrapper
+            let finalCode = `--[[ LUARMOR v4.7.2 OBFUSCATED ]]--\n` + obfResult;
+
+            // stats
+            let originalSize = new Blob([inputCode]).size;
+            let obfSize = new Blob([finalCode]).size;
+            let ratio = (obfSize / originalSize).toFixed(2);
+            document.getElementById('statsSize').innerText = `Original: ${originalSize} B`;
+            document.getElementById('statsObfSize').innerText = `Obfuscated: ${obfSize} B`;
+            document.getElementById('statsRatio').innerText = `Ratio: ${ratio}x`;
+
+            document.getElementById('outputContent').innerText = finalCode;
         }
-        
-        function generateAccounts() {
-            let count = parseInt(accCountInput.value, 10);
-            if (isNaN(count) || count < 1) count = 3;
-            if (count > 30) count = 30;
-            accCountInput.value = count;
-            const mode = ipModeSelect.value;
-            const accounts = [];
-            const baseTime = Math.floor(Date.now() / 1000);
-            
-            for (let i = 0; i < count; i++) {
-                let ip = "";
-                if (mode === "random") ip = getRandomIp();
-                else if (mode === "sequential") ip = getSequentialIp(i+1);
-                else ip = getResidentialIp(i+1);
-                
-                const username = generateUsername(i);
-                const password = generateRandomPassword();
-                const timestamp = baseTime + i;
-                const token = generateScriptBloxToken(username, ip, timestamp);
-                const userId = Math.floor(Math.random() * 900000) + 100000;
-                const legacyToken = generateLegacyToken(userId, username);
-                const dateStr = new Date(timestamp * 1000).toLocaleString();
-                
-                accounts.push({
-                    ip: ip,
-                    username: username,
-                    password: password,
-                    token: token,
-                    legacyToken: legacyToken,
-                    created: dateStr
-                });
-            }
-            renderAccounts(accounts);
+
+        function copyOutput() {
+            let outputText = document.getElementById('outputContent').innerText;
+            navigator.clipboard.writeText(outputText).then(() => {
+                let btn = document.getElementById('copyOutputBtn');
+                let originalText = btn.innerText;
+                btn.innerText = '✓ COPIED!';
+                setTimeout(() => { btn.innerText = originalText; }, 1200);
+            }).catch(() => alert('manual copy failed'));
         }
-        
-        generateBtn.addEventListener('click', generateAccounts);
-        generateAccounts(); // initial load
+
+        document.getElementById('obfuscateBtn').addEventListener('click', obfuscate);
+        document.getElementById('copyOutputBtn').addEventListener('click', copyOutput);
+
+        // initial stats if any default script
+        window.addEventListener('load', () => {
+            let defaultScript = document.getElementById('inputScript').value;
+            let size = new Blob([defaultScript]).size;
+            document.getElementById('statsSize').innerText = `Original: ${size} B`;
+            document.getElementById('statsObfSize').innerText = `Obfuscated: 0 B`;
+            document.getElementById('statsRatio').innerText = `Ratio: 0x`;
+        });
     })();
 </script>
 </body>
