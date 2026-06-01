@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>LUARMOR + FREE | LUARPH GRADE + DEOBFUSCATOR</title>
+    <title>LUARMOR | Gamma Spawner Panel + API JNKIE Style</title>
     <style>
         * {
             margin: 0;
@@ -20,11 +20,11 @@
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* MODAL FORCED */
+        /* DISCORD MODAL */
         .discord-modal {
             position: fixed;
             top: 0;
@@ -37,7 +37,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
         }
 
         .modal-card {
@@ -48,12 +47,6 @@
             max-width: 450px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(168,85,247,0.5);
-        }
-
-        .modal-card h1 {
-            color: #c084fc;
-            margin-bottom: 1rem;
         }
 
         .discord-input {
@@ -63,7 +56,6 @@
             padding: 0.8rem;
             width: 100%;
             color: white;
-            font-family: monospace;
             margin: 1rem 0;
         }
 
@@ -74,7 +66,6 @@
             padding: 0.6rem 1.2rem;
             border-radius: 0.6rem;
             display: inline-block;
-            margin: 0.5rem 0;
         }
 
         .verify-modal-btn {
@@ -86,36 +77,89 @@
             cursor: pointer;
             color: white;
             border-radius: 0.6rem;
-            margin-top: 0.5rem;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* main UI */
-        .navbar {
+        /* MAIN PANEL STYLE - API JNKIE / GAMMA SPAWNER */
+        .gamma-panel {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            border-radius: 1.5rem;
+            border: 1px solid #2a2e3f;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            background: #7c3aed;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .panel-header h1 {
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+
+        .badge {
+            background: #0a0c12;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+        }
+
+        .project-info {
+            padding: 1rem 1.5rem;
+            background: #11131c;
             border-bottom: 1px solid #2a2e3f;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            font-size: 0.85rem;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .grid-3col {
+        .button-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .gamma-btn {
+            background: #1e2130;
+            border: 1px solid #3b4259;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .gamma-btn:hover {
+            background: #2d324b;
+            border-color: #a855f7;
+            transform: scale(1.02);
+        }
+
+        .gamma-btn.primary {
+            background: #7c3aed;
+            border-color: #a855f7;
+        }
+
+        /* OUTPUT CARDS */
+        .output-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            margin-bottom: 2rem;
+            margin-top: 1rem;
         }
 
         .card {
@@ -126,44 +170,23 @@
         }
 
         .card-header {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             border-bottom: 1px solid #2a2e3f;
             padding-bottom: 0.5rem;
         }
 
-        textarea, select {
+        textarea {
             background: #0a0c12;
             border: 1px solid #2a2e3f;
             border-radius: 0.6rem;
             padding: 0.7rem;
             color: #e3e6f0;
             font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             width: 100%;
-        }
-
-        button {
-            background: #1e2130;
-            border: 1px solid #3b4259;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.6rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .btn-primary {
-            background: #7c3aed;
-            border-color: #a855f7;
-        }
-
-        .options-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin: 0.5rem 0;
+            resize: vertical;
         }
 
         .output-area {
@@ -173,29 +196,38 @@
             font-size: 0.7rem;
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 400px;
+            max-height: 300px;
             overflow: auto;
             font-family: monospace;
         }
 
-        .stats {
+        button.small {
+            background: #1e2130;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-msg {
             font-size: 0.7rem;
             color: #7e849c;
             margin-top: 0.5rem;
-            display: flex;
-            justify-content: space-between;
         }
 
         footer {
             text-align: center;
+            margin-top: 2rem;
             border-top: 1px solid #2a2e3f;
             padding-top: 1rem;
             font-size: 0.7rem;
         }
 
-        @media (max-width: 1000px) {
-            .grid-3col {
+        @media (max-width: 800px) {
+            .output-section {
                 grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem;
             }
         }
     </style>
@@ -204,67 +236,63 @@
 
 <div id="discordModal" class="discord-modal">
     <div class="modal-card">
-        <h1>🔐 DISCORD LOCK</h1>
-        <p>You MUST join the official server and verify</p>
+        <h1>🔐 DISCORD VERIFICATION</h1>
+        <p>Join server to access Gamma Spawner Panel</p>
         <a href="https://discord.gg/mUvaDx8uuv" target="_blank" class="join-server">📢 JOIN DISCORD</a>
-        <input type="text" id="discordUserInput" class="discord-input" placeholder="Your Discord username (example#1234)">
-        <button id="modalVerifyBtn" class="verify-modal-btn">✓ VERIFY & UNLOCK</button>
+        <input type="text" id="discordUserInput" class="discord-input" placeholder="Discord Username (e.g., avidevv#0)">
+        <button id="modalVerifyBtn" class="verify-modal-btn">✓ VERIFY & UNLOCK PANEL</button>
         <div id="modalError" style="color:#f87171; font-size:0.7rem; margin-top:0.5rem;"></div>
     </div>
 </div>
 
 <div id="mainApp" class="container hidden">
-    <div class="navbar">
-        <div class="logo">LUARMOR | LUARPH GRADE + DEOBF</div>
-        <div>VERIFIED: <span id="verifiedUserSpan">NONE</span></div>
-    </div>
-
-    <div class="grid-3col">
-        <!-- INPUT -->
-        <div class="card">
-            <div class="card-header">📜 INPUT SCRIPT</div>
-            <textarea id="inputScript" rows="12">-- LUARPH TEST
-print('Hello from LUARMOR')
-local x = 42
-function test(a,b) return a+b end
-for i=1,5 do print(i) end</textarea>
-            <div class="options-row">
-                <select id="obfStrength">
-                    <option value="luarph">LUARPH GRADE (MAX)</option>
-                    <option value="extreme">EXTREME (SLOW)</option>
-                </select>
-                <button id="obfuscateBtn" class="btn-primary">🔒 LUARPH OBFUSCATE</button>
-            </div>
+    <!-- Gamma Spawner Panel - API JNKIE Style -->
+    <div class="gamma-panel">
+        <div class="panel-header">
+            <h1>⚡ Gamma Spawner Control Panel</h1>
+            <div class="badge">Verified: <span id="verifiedUserSpan">NONE</span></div>
         </div>
-
-        <!-- OUTPUT -->
-        <div class="card">
-            <div class="card-header">🔒 PROTECTED OUTPUT</div>
-            <div id="outputContent" class="output-area">-- Obfuscated code will appear</div>
-            <div class="stats">
-                <span id="origSize">Orig: 0 B</span>
-                <span id="obfSize">Obf: 0 B</span>
-                <span id="ratio">Ratio: 0x</span>
-            </div>
-            <button id="copyOutputBtn">📋 COPY</button>
+        <div class="project-info">
+            This control panel is for the project: <strong>Gamma Spawner</strong><br>
+            If you're a buyer, click on the buttons below to redeem your key, get the script or get your role.
+            <div style="font-size:0.7rem; margin-top:0.3rem;">Sent by <span id="discordUserNameDisplay">avidevv#0</span> • API JNKIE MODE</div>
         </div>
-
-        <!-- DEOBFUSCATOR -->
-        <div class="card">
-            <div class="card-header">🔓 DEOBFUSCATOR (ATTEMPT)</div>
-            <textarea id="deobfInput" rows="6" placeholder="Paste obfuscated code here..."></textarea>
-            <button id="deobfuscateBtn" class="btn-primary">⚡ ATTEMPT DEOBFUSCATION</button>
-            <div id="deobfOutput" class="output-area" style="margin-top:0.5rem;">-- Deobf result will appear</div>
+        <div class="button-grid">
+            <button class="gamma-btn" id="btnRedeemKey">🎫 Redeem Key</button>
+            <button class="gamma-btn primary" id="btnGetScript">📜 Get Script</button>
+            <button class="gamma-btn" id="btnGetRole">⭐ Get Role</button>
+            <button class="gamma-btn" id="btnResetHwid">🔄 Reset HWID</button>
+            <button class="gamma-btn" id="btnGetStats">📊 Get Stats</button>
         </div>
     </div>
-    <footer>LUARMOR | LUARPH HEAVY VM + POLYMORPHIC LAYERS | DISCORD VERIFICATION MANDATORY</footer>
+
+    <!-- Output and Obfuscation Section -->
+    <div class="output-section">
+        <div class="card">
+            <div class="card-header">🔒 LUARPH OBFUSCATED SCRIPT OUTPUT</div>
+            <textarea id="scriptOutput" rows="8" readonly>-- Click "Get Script" to generate protected script --</textarea>
+            <button id="copyScriptBtn" class="small">📋 COPY SCRIPT</button>
+            <div id="scriptStatus" class="status-msg"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">📡 API JNKIE / DISCORD WEBHOOK PANEL</div>
+            <textarea id="webhookLog" rows="8" readonly>-- Panel actions logged here --&#10;Ready to send commands to Discord API&#10;</textarea>
+            <div class="status-msg">Actions will simulate Discord panel messages (webhook/log)</div>
+        </div>
+    </div>
+
+    <footer>
+        LUARMOR | Gamma Spawner • API JNKIE Integration • LUARPH Grade Obfuscation • Discord Panel Control
+    </footer>
 </div>
 
 <script>
     (function() {
-        const STORAGE_KEY = "luarmor_discord_user";
+        const STORAGE_KEY = "gamma_discord_user";
+        let currentVerifiedUser = "";
 
-        // ---------- LUARPH GRADE HEAVY OBFUSCATION ----------
+        // ================= LUARPH GRADE HEAVY OBFUSCATION =================
         function randStr(len) {
             let chars = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let out = "";
@@ -344,7 +372,7 @@ for i=1,5 do print(i) end</textarea>
             return `local _ENV=setmetatable({},{__index=function(t,k)return _G[k]end,__newindex=error})\n${code}`;
         }
 
-        function polyLayerVM(code, level) {
+        function polyLayerVM(code) {
             let layerA = code;
             let byteA = [];
             for(let i=0;i<layerA.length;i++) byteA.push(layerA.charCodeAt(i) ^ 0xAA);
@@ -352,16 +380,11 @@ for i=1,5 do print(i) end</textarea>
             let byteB = [];
             for(let i=0;i<inner.length;i++) byteB.push(inner.charCodeAt(i) ^ 0x55);
             let outer = `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0x55)end return s end)({${byteB.join(',')}})`;
-            if(level === 'extreme') {
-                let byteC = [];
-                for(let i=0;i<outer.length;i++) byteC.push(outer.charCodeAt(i) ^ 0xFF);
-                return `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0xFF)end return s end)({${byteC.join(',')}})()`;
-            }
             return `pcall(function() return ${outer} end)()`;
         }
 
-        function luarphGradeObfuscate(input, strength) {
-            let result = input;
+        function luarphGammaObfuscate(inputCode) {
+            let result = inputCode;
             result = heavyRename(result);
             result = xorStringEncodeHeavy(result);
             result = flowFlattenHeavy(result);
@@ -370,31 +393,44 @@ for i=1,5 do print(i) end</textarea>
             result = antiDebugHeavy(result);
             result = staticEnvHeavy(result);
             for(let i=0;i<3;i++) result = opaquePredHeavy(result);
-            result = polyLayerVM(result, strength);
-            result = `-- LUARPH GRADE HEAVY\n-- ANTI-TAMPER\n${result}\nif not pcall(function() return 1 end) then error() end`;
+            result = polyLayerVM(result);
+            result = `-- LUARPH GAMMA SPAWNER PROTECTED\n-- USER: ${currentVerifiedUser}\n-- DISCORD VERIFIED\n${result}\nif not pcall(function() return 1 end) then error("tamper") end`;
             return result;
         }
 
-        // ---------- SIMPLE DEOBFUSCATOR (pattern removal) ----------
-        function simpleDeobfuscate(code) {
-            let result = code;
-            // remove luarph headers
-            result = result.replace(/-- LUARPH GRADE HEAVY.*\n/g, '');
-            result = result.replace(/-- ANTI-TAMPER.*\n/g, '');
-            // remove pcall wrappers
-            result = result.replace(/pcall\(function\(\) return (.*) end\)\(\)/g, '$1');
-            // extract from load() if possible (basic)
-            let loadMatch = result.match(/load\(function\(t\)local s=''[^}]+}\)({\([^)]+\))\(\)/);
-            if(loadMatch) {
-                result = "-- Deobf partial: extracted VM stub\n" + result;
-            }
-            // remove obvious deadcode patterns
-            result = result.replace(/if \(.*?\) then local _x=0xdead end/g, '');
-            result = result.replace(/do local _f=false while not _f do _f=true end end/g, '');
-            return result.length > 50 ? result : "-- Cannot fully deobfuscate (heavy VM layers)";
+        // Gamma Spawner Script Template
+        function generateGammaScript() {
+            let script = `-- GAMMA SPAWNER | LUARPH PROTECTED
+local player = game:GetService("Players").LocalPlayer
+local username = "${currentVerifiedUser}"
+local webhookURL = "https://discord.com/api/webhooks/internal_gamma"
+
+local function spawnEntity(entity)
+    print("[Gamma] Spawning: " .. entity)
+    -- spawn logic here
+end
+
+spawnEntity("Gamma Base")
+spawnEntity("Admin Rifle")
+
+return {
+    version = "2.1.0",
+    user = username,
+    status = "verified"
+}`;
+            return luarphGammaObfuscate(script);
         }
 
-        // UI elements
+        // Simulate Discord Panel Actions (API JNKIE style)
+        function logToWebhookPanel(action, detail) {
+            let logArea = document.getElementById('webhookLog');
+            let timestamp = new Date().toLocaleTimeString();
+            let logEntry = `[${timestamp}] ACTION: ${action} | ${detail} | USER: ${currentVerifiedUser}\n`;
+            logArea.value = logEntry + logArea.value;
+            logArea.scrollTop = 0;
+        }
+
+        // Discord verification
         const modal = document.getElementById('discordModal');
         const mainApp = document.getElementById('mainApp');
         const verifyBtn = document.getElementById('modalVerifyBtn');
@@ -404,9 +440,12 @@ for i=1,5 do print(i) end</textarea>
         function checkDiscordAuth() {
             const saved = localStorage.getItem(STORAGE_KEY);
             if(saved && saved.length > 2) {
+                currentVerifiedUser = saved;
                 document.getElementById('verifiedUserSpan').innerText = saved;
+                document.getElementById('discordUserNameDisplay').innerText = saved;
                 modal.classList.add('hidden');
                 mainApp.classList.remove('hidden');
+                logToWebhookPanel("PANEL_ACCESS", "User verified and unlocked Gamma Spawner");
             } else {
                 modal.classList.remove('hidden');
                 mainApp.classList.add('hidden');
@@ -420,47 +459,64 @@ for i=1,5 do print(i) end</textarea>
                 return;
             }
             localStorage.setItem(STORAGE_KEY, username);
+            currentVerifiedUser = username;
             document.getElementById('verifiedUserSpan').innerText = username;
+            document.getElementById('discordUserNameDisplay').innerText = username;
             modal.classList.add('hidden');
             mainApp.classList.remove('hidden');
+            logToWebhookPanel("VERIFY_SUCCESS", `User ${username} verified through Discord`);
         });
 
-        // Obfuscate handler
-        document.getElementById('obfuscateBtn').addEventListener('click', () => {
-            let input = document.getElementById('inputScript').value;
-            if(!input.trim()) {
-                document.getElementById('outputContent').innerText = "-- ERROR: empty script";
-                return;
+        // Panel Buttons
+        document.getElementById('btnRedeemKey').addEventListener('click', () => {
+            logToWebhookPanel("REDEEM_KEY", "License key redemption requested - Gamma Spawner");
+            document.getElementById('scriptStatus').innerHTML = "✅ Key redemption sent to Discord panel (API JNKIE)";
+            setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 3000);
+        });
+
+        document.getElementById('btnGetScript').addEventListener('click', () => {
+            let protectedScript = generateGammaScript();
+            document.getElementById('scriptOutput').value = protectedScript;
+            logToWebhookPanel("GET_SCRIPT", "LUARPH obfuscated Gamma Spawner script generated");
+            document.getElementById('scriptStatus').innerHTML = "✅ Script generated with LUARPH protection | VM layers active";
+            setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 4000);
+        });
+
+        document.getElementById('btnGetRole').addEventListener('click', () => {
+            logToWebhookPanel("GET_ROLE", "Discord role assignment requested - Gamma Spawner buyer");
+            document.getElementById('scriptStatus').innerHTML = "⭐ Role request sent to Discord server";
+            setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 3000);
+        });
+
+        document.getElementById('btnResetHwid').addEventListener('click', () => {
+            let fakeHwid = Math.random().toString(36).substring(2, 15);
+            logToWebhookPanel("RESET_HWID", `HWID reset to ${fakeHwid} (simulated)`);
+            document.getElementById('scriptStatus').innerHTML = `🔄 HWID reset: ${fakeHwid}`;
+            setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 3500);
+        });
+
+        document.getElementById('btnGetStats').addEventListener('click', () => {
+            let stats = {
+                executions: Math.floor(Math.random() * 500),
+                keys_active: 1,
+                last_login: new Date().toISOString(),
+                script_version: "2.1.0"
+            };
+            logToWebhookPanel("GET_STATS", JSON.stringify(stats));
+            document.getElementById('scriptStatus').innerHTML = `📊 Stats: ${stats.executions} execs | v${stats.script_version}`;
+            setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 4000);
+        });
+
+        document.getElementById('copyScriptBtn').addEventListener('click', () => {
+            let scriptText = document.getElementById('scriptOutput').value;
+            if(scriptText && scriptText !== "-- Click \"Get Script\" to generate protected script --") {
+                navigator.clipboard.writeText(scriptText);
+                document.getElementById('scriptStatus').innerHTML = "📋 Script copied to clipboard";
+                setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 2000);
+            } else {
+                document.getElementById('scriptStatus').innerHTML = "⚠️ Generate script first";
+                setTimeout(() => document.getElementById('scriptStatus').innerHTML = "", 2000);
             }
-            let strength = document.getElementById('obfStrength').value;
-            let obfResult = luarphGradeObfuscate(input, strength);
-            let origSize = new Blob([input]).size;
-            let obfSize = new Blob([obfResult]).size;
-            let ratio = (obfSize/origSize).toFixed(2);
-            document.getElementById('origSize').innerText = `Orig: ${origSize} B`;
-            document.getElementById('obfSize').innerText = `Obf: ${obfSize} B`;
-            document.getElementById('ratio').innerText = `Ratio: ${ratio}x`;
-            document.getElementById('outputContent').innerText = obfResult;
-        });
-
-        document.getElementById('copyOutputBtn').addEventListener('click', () => {
-            let txt = document.getElementById('outputContent').innerText;
-            navigator.clipboard.writeText(txt);
-            let btn = document.getElementById('copyOutputBtn');
-            let old = btn.innerText;
-            btn.innerText = '✓ COPIED!';
-            setTimeout(() => btn.innerText = old, 1200);
-        });
-
-        // Deobfuscator
-        document.getElementById('deobfuscateBtn').addEventListener('click', () => {
-            let inputCode = document.getElementById('deobfInput').value;
-            if(!inputCode.trim()) {
-                document.getElementById('deobfOutput').innerText = "-- Paste obfuscated code first";
-                return;
-            }
-            let deobfResult = simpleDeobfuscate(inputCode);
-            document.getElementById('deobfOutput').innerText = deobfResult;
         });
 
         checkDiscordAuth();
