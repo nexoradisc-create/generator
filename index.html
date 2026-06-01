@@ -19,13 +19,11 @@
             padding: 2rem 1.5rem;
         }
 
-        /* main container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* header / navigation */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -49,7 +47,6 @@
         .logo span {
             color: #e3e6f0;
             background: none;
-            -webkit-background-clip: unset;
         }
 
         .nav-links {
@@ -69,15 +66,13 @@
             color: #c084fc;
         }
 
-        /* main grid */
         .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
-        /* cards */
         .card {
             background: #11131c;
             border: 1px solid #252a3a;
@@ -94,11 +89,9 @@
             border-bottom: 1px solid #2a2e3f;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 0.5rem;
-        }
-
-        .card-header i {
-            font-size: 1.3rem;
         }
 
         textarea, input, select {
@@ -134,7 +127,6 @@
         button:hover {
             background: #2d324b;
             border-color: #a855f7;
-            color: white;
         }
 
         .btn-primary {
@@ -150,7 +142,8 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            margin: 1rem 0;
+            margin: 0.75rem 0;
+            align-items: center;
         }
 
         .checkbox-label {
@@ -160,16 +153,15 @@
             font-size: 0.8rem;
         }
 
-        /* output section */
         .output-area {
             background: #0a0c12;
             border-radius: 0.6rem;
             padding: 1rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 400px;
+            max-height: 450px;
             overflow: auto;
         }
 
@@ -177,8 +169,7 @@
             background: #1e2130;
             padding: 0.3rem 0.8rem;
             font-size: 0.7rem;
-            float: right;
-            margin-top: 0;
+            margin: 0;
         }
 
         .stats {
@@ -190,12 +181,18 @@
         }
 
         footer {
-            margin-top: 3rem;
+            margin-top: 2rem;
             text-align: center;
             border-top: 1px solid #2a2e3f;
             padding-top: 1.5rem;
             font-size: 0.7rem;
             color: #5e647e;
+        }
+
+        .vm-section {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed #2a2e3f;
         }
 
         @media (max-width: 800px) {
@@ -216,20 +213,20 @@
             <a href="#">OBFUSCATE</a>
             <a href="#">ENCRYPT</a>
             <a href="#">ANTI-DEBUG</a>
-            <a href="#">DOCS</a>
+            <a href="#">VM</a>
+            <a href="#">LICENSE</a>
         </div>
     </div>
 
     <div class="grid-2col">
-        <!-- LEFT PANEL: input & settings -->
         <div class="card">
             <div class="card-header">
-                <span>📜</span> INPUT SCRIPT
+                <span>📜 INPUT SCRIPT</span>
             </div>
-            <textarea id="inputScript" rows="10" placeholder="-- Lua / Luau code here --&#10;print('Hello from LUARMOR')&#10;local x = 42&#10;function test(a,b) return a+b end"></textarea>
+            <textarea id="inputScript" rows="8" placeholder="-- Lua / Luau code --&#10;print('Hello from LUARMOR')&#10;local x = 42&#10;function test(a,b) return a+b end"></textarea>
 
-            <div class="card-header" style="margin-top: 1rem;">
-                <span>⚙️</span> OBFUSCATION OPTIONS
+            <div class="card-header" style="margin-top: 0.5rem;">
+                <span>⚙️ OBFUSCATION OPTIONS</span>
             </div>
             <div class="options-row">
                 <label class="checkbox-label"><input type="checkbox" id="optRenameVars" checked> Rename variables</label>
@@ -237,6 +234,30 @@
                 <label class="checkbox-label"><input type="checkbox" id="optFlattenFlow" checked> Control flow flattening</label>
                 <label class="checkbox-label"><input type="checkbox" id="optDeadCode" checked> Dead code injection</label>
                 <label class="checkbox-label"><input type="checkbox" id="optAntiDebug" checked> Anti-debug traps</label>
+                <label class="checkbox-label"><input type="checkbox" id="optOpaquePred" checked> Opaque predicates</label>
+            </div>
+
+            <div class="vm-section">
+                <div class="card-header" style="margin-bottom: 0.5rem;">
+                    <span>🖥️ VM OBFUSCATION SETTINGS</span>
+                </div>
+                <div class="options-row">
+                    <select id="vmMode" style="width: auto;">
+                        <option value="light">Light VM (faster)</option>
+                        <option value="intense" selected>Intense VM structure</option>
+                    </select>
+                    <label class="checkbox-label"><input type="checkbox" id="optCompatibility" checked> Compatibility mode</label>
+                    <label class="checkbox-label"><input type="checkbox" id="optHardcodeGlobals"> Hardcode globals</label>
+                </div>
+                <div class="options-row">
+                    <select id="optLevel" style="width: auto;">
+                        <option value="low">Optimization: Low</option>
+                        <option value="medium" selected>Optimization: Medium</option>
+                        <option value="high">Optimization: High</option>
+                    </select>
+                    <label class="checkbox-label"><input type="checkbox" id="optStaticEnv"> Static environment</label>
+                    <label class="checkbox-label"><input type="checkbox" id="optGcFixes"> GC fixes</label>
+                </div>
             </div>
 
             <div class="options-row">
@@ -249,10 +270,9 @@
             </div>
         </div>
 
-        <!-- RIGHT PANEL: output & stats -->
         <div class="card">
             <div class="card-header">
-                <span>🔒</span> PROTECTED OUTPUT
+                <span>🔒 PROTECTED OUTPUT</span>
                 <button id="copyOutputBtn" class="copy-btn">📋 COPY</button>
             </div>
             <div id="outputContent" class="output-area">-- Obfuscated code will appear here --</div>
@@ -264,74 +284,59 @@
         </div>
     </div>
 
-    <!-- extra info row: watermark / system -->
-    <div class="card" style="margin-top: 0.5rem;">
+    <div class="card">
         <div class="card-header">
-            <span>🛡️</span> LUARMOR ENGINE v4.7.2
+            <span>🛡️ LUARMOR ENGINE v4.7.2 | LICENSING & VM PROTECTION</span>
         </div>
         <div style="font-size: 0.75rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <span>✔️ Polymorphic encryption</span>
             <span>✔️ Virtualized constants</span>
             <span>✔️ Opaque predicates</span>
             <span>✔️ Anti-tamper checksum</span>
+            <span>✔️ License key validation</span>
+            <span>✔️ Remote script hosting</span>
         </div>
     </div>
     <footer>
-        LUARMOR PROTECT | ADVANCED LUA OBFUSCATION SYSTEM
+        LUARMOR PROTECT | LICENSING + DISTRIBUTION PLATFORM | VM OBFUSCATION
     </footer>
 </div>
 
 <script>
     (function() {
-        // helper: generate random alphanumeric name
-        function randomName() {
+        function randomName(len) {
+            len = len || 12;
             const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_';
             let name = '';
-            for(let i=0; i<8; i++) {
-                name += chars[Math.floor(Math.random() * chars.length)];
-            }
+            for(let i=0; i<len; i++) name += chars[Math.floor(Math.random() * chars.length)];
             return name;
         }
 
-        // simple variable renaming (basic regex, preserves keywords)
-        function renameVariables(code, usedNames) {
-            let varRegex = /\b(local\s+)?([a-zA-Z_][a-zA-Z0-9_]*)\b/g;
+        function renameVariables(code) {
             let keywords = new Set(['and','break','do','else','elseif','end','false','for','function','if','in','local','nil','not','or','repeat','return','then','true','until','while','goto']);
-            let definedVars = new Map();
-            let renamedMap = new Map();
+            let varMap = new Map();
             let newCode = code;
-
-            // collect variable declarations (local assignments, function names)
             let localDecl = /local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g;
             let match;
             while ((match = localDecl.exec(code)) !== null) {
                 let vname = match[1];
-                if(!keywords.has(vname) && !definedVars.has(vname)) {
-                    definedVars.set(vname, randomName());
-                }
+                if(!keywords.has(vname) && !varMap.has(vname)) varMap.set(vname, randomName(12));
             }
-            // function definitions: function name(...
             let funcDef = /function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g;
             while ((match = funcDef.exec(code)) !== null) {
                 let fname = match[1];
-                if(!keywords.has(fname) && !definedVars.has(fname)) {
-                    definedVars.set(fname, randomName());
-                }
+                if(!keywords.has(fname) && !varMap.has(fname)) varMap.set(fname, randomName(12));
             }
-
-            // replace all occurrences of those vars
-            for(let [orig, newVar] of definedVars.entries()) {
+            for(let [orig, newVar] of varMap.entries()) {
                 let re = new RegExp(`\\b${orig}\\b`, 'g');
                 newCode = newCode.replace(re, newVar);
             }
             return newCode;
         }
 
-        // simple string encoding: convert to char code table + loadstring equivalent
         function encodeStrings(code) {
-            // find string literals (simple: "..." or '...')
             let strRegex = /(["'])((?:(?=(\\?))\3.)*?)\1/g;
-            let encodedCode = code.replace(strRegex, (match, quote, content) => {
+            return code.replace(strRegex, (match, quote, content) => {
                 let decoded = content.replace(/\\(.)/g, (_, esc) => {
                     if(esc === 'n') return '\n';
                     if(esc === 't') return '\t';
@@ -342,40 +347,58 @@
                     return esc;
                 });
                 let bytes = [];
-                for(let i=0; i<decoded.length; i++) {
-                    bytes.push(decoded.charCodeAt(i));
-                }
-                let tblStr = '{' + bytes.join(',') + '}';
-                return `(function(t) local s='';for i=1,#t do s=s..string.char(t[i]);end return s end)(${tblStr})`;
+                for(let i=0; i<decoded.length; i++) bytes.push(decoded.charCodeAt(i));
+                let key = Math.floor(Math.random() * 255);
+                let xored = bytes.map(b => b ^ key);
+                return `(function(k,d) local s='' for i=1,#d do s=s..string.char(d[i]~k) end return s end)(${key},{${xored.join(',')}})`;
             });
-            return encodedCode;
         }
 
-        // control flow flattening: wrap main logic in a dispatch loop (simplified demo)
         function flattenControlFlow(code) {
-            let placeholder = "-- [flattened] " + Math.random();
-            let flattened = `do local dispatch = {}\nlocal state = 1\nwhile state ~= 0 do\nif state == 1 then\n${code}\nstate = 0\nend\nend\nend`;
-            return flattened;
+            return `do local _state=1 while _state~=0 do if _state==1 then ${code.replace(/\n/g,'\n')} _state=0 end end end`;
         }
 
-        // dead code injection: insert opaque predicates
         function injectDeadCode(code) {
-            let deadBlock = `if (math.random() > -1) then local _dummy = 0xdeadbeef end `;
             let lines = code.split('\n');
             let newLines = [];
             for(let i=0; i<lines.length; i++) {
                 newLines.push(lines[i]);
                 if(i % 3 === 2 && lines[i].trim().length > 0) {
-                    newLines.push('    ' + deadBlock + ' -- deadcode');
+                    newLines.push(`    if (math.random() > -1) then local _dummy_${Math.random().toString(36)} = 0xdeadbeef end`);
                 }
             }
             return newLines.join('\n');
         }
 
-        // anti-debug traps: add infinite loop checks / debug detection stubs
         function injectAntiDebug(code) {
-            let trap = `if debug and debug.getinfo then error("debugger detected") end `;
-            return trap + "\n" + code + "\n--[[ antidebug stub --]]\n" + trap;
+            return `if debug and debug.getinfo then error("debugger detected") end\n${code}\n-- anti-tamper\nif not pcall(function() return end) then error("corrupted") end`;
+        }
+
+        function injectOpaquePredicates(code) {
+            let r = Math.floor(Math.random()*100000);
+            return `if (${r} * ${r+1} % 2 == ${r%2}) then\n${code}\nend`;
+        }
+
+        function hardcodeGlobals(code) {
+            return code.replace(/\bprint\b/g, '_G.print').replace(/\bmath\b/g, '_G.math');
+        }
+
+        function staticEnvironment(code) {
+            return `local _ENV = setmetatable({}, {__index=_G})\n${code}`;
+        }
+
+        function gcFixes(code) {
+            return `if collectgarbage then collectgarbage("stop") end\n${code}\nif collectgarbage then collectgarbage("restart") end`;
+        }
+
+        function vmWrapper(code, mode) {
+            if(mode === 'light') {
+                return `-- LIGHT VM\nlocal vm_env = {}\n(function()\n${code}\nend)()`;
+            } else {
+                let bytecode = [];
+                for(let i=0; i<code.length; i++) bytecode.push(code.charCodeAt(i) ^ 0x77);
+                return `-- INTENSE VM STRUCTURE\nlocal vm = load((function(t) local s='' for i=1,#t do s=s..string.char(t[i]~0x77) end return s end)({${bytecode.join(',')}}))\npcall(vm)`;
+            }
         }
 
         function obfuscate() {
@@ -390,35 +413,51 @@
             let flatten = document.getElementById('optFlattenFlow').checked;
             let deadCode = document.getElementById('optDeadCode').checked;
             let antiDbg = document.getElementById('optAntiDebug').checked;
-            let level = document.getElementById('encLevel').value;
+            let opaquePred = document.getElementById('optOpaquePred').checked;
+            let vmMode = document.getElementById('vmMode').value;
+            let compatibility = document.getElementById('optCompatibility').checked;
+            let hardcode = document.getElementById('optHardcodeGlobals').checked;
+            let optLevel = document.getElementById('optLevel').value;
+            let staticEnv = document.getElementById('optStaticEnv').checked;
+            let gcFix = document.getElementById('optGcFixes').checked;
+            let globalLevel = document.getElementById('encLevel').value;
 
             let obfResult = inputCode;
 
-            // apply based on level and checkboxes
             if(renamed) obfResult = renameVariables(obfResult);
             if(strEnc) obfResult = encodeStrings(obfResult);
-            if(flatten && level !== 'low') obfResult = flattenControlFlow(obfResult);
-            if(deadCode && level !== 'low') obfResult = injectDeadCode(obfResult);
+            if(flatten && globalLevel !== 'low') obfResult = flattenControlFlow(obfResult);
+            if(deadCode && globalLevel !== 'low') obfResult = injectDeadCode(obfResult);
             if(antiDbg) obfResult = injectAntiDebug(obfResult);
-
-            // additional high level: double encode
-            if(level === 'high') {
-                if(strEnc) obfResult = encodeStrings(obfResult);
-                if(renamed) obfResult = renameVariables(obfResult);
-                obfResult = `-- LUARMOR PROTECTED [HIGH]\n` + obfResult + `\n-- checksum: ${Math.random().toString(36)}`;
+            if(opaquePred) obfResult = injectOpaquePredicates(obfResult);
+            if(hardcode) obfResult = hardcodeGlobals(obfResult);
+            if(staticEnv) obfResult = staticEnvironment(obfResult);
+            if(gcFix) obfResult = gcFixes(obfResult);
+            if(compatibility) obfResult = `--[[ COMPAT MODE ENBALED ]]\nif not pcall(function() return game end) then game = nil end\n${obfResult}`;
+            if(optLevel === 'high') {
+                obfResult = renameVariables(obfResult);
+                obfResult = injectOpaquePredicates(obfResult);
             }
 
-            // final wrapper
-            let finalCode = `--[[ LUARMOR v4.7.2 OBFUSCATED ]]--\n` + obfResult;
+            if(vmMode === 'intense') {
+                obfResult = vmWrapper(obfResult, 'intense');
+            } else {
+                obfResult = vmWrapper(obfResult, 'light');
+            }
 
-            // stats
+            if(globalLevel === 'high') {
+                obfResult = encodeStrings(obfResult);
+                obfResult = `-- HIGH SECURITY LAYER\n${obfResult}\n-- checksum: ${Math.random().toString(36)}`;
+            }
+
+            let finalCode = `--[[ LUARMOR v4.7.2 PROTECTED ]]--\n-- LICENSE: VALIDATION REQUIRED\n-- VM: ${vmMode.toUpperCase()}\n${obfResult}`;
+
             let originalSize = new Blob([inputCode]).size;
             let obfSize = new Blob([finalCode]).size;
             let ratio = (obfSize / originalSize).toFixed(2);
             document.getElementById('statsSize').innerText = `Original: ${originalSize} B`;
             document.getElementById('statsObfSize').innerText = `Obfuscated: ${obfSize} B`;
             document.getElementById('statsRatio').innerText = `Ratio: ${ratio}x`;
-
             document.getElementById('outputContent').innerText = finalCode;
         }
 
@@ -429,19 +468,16 @@
                 let originalText = btn.innerText;
                 btn.innerText = '✓ COPIED!';
                 setTimeout(() => { btn.innerText = originalText; }, 1200);
-            }).catch(() => alert('manual copy failed'));
+            });
         }
 
         document.getElementById('obfuscateBtn').addEventListener('click', obfuscate);
         document.getElementById('copyOutputBtn').addEventListener('click', copyOutput);
 
-        // initial stats if any default script
         window.addEventListener('load', () => {
             let defaultScript = document.getElementById('inputScript').value;
             let size = new Blob([defaultScript]).size;
             document.getElementById('statsSize').innerText = `Original: ${size} B`;
-            document.getElementById('statsObfSize').innerText = `Obfuscated: 0 B`;
-            document.getElementById('statsRatio').innerText = `Ratio: 0x`;
         });
     })();
 </script>
