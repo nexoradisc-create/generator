@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>LUARMOR | HEAVY OBFUSCATION (LUARPH GRADE)</title>
+    <title>LUARMOR + FREE | LUARPH GRADE + DEOBFUSCATOR</title>
     <style>
         * {
             margin: 0;
@@ -20,63 +20,64 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
-        .verification-overlay {
+        /* MODAL FORCED */
+        .discord-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
 
-        .verification-card {
+        .modal-card {
             background: #11131c;
-            border: 1px solid #a855f7;
-            border-radius: 1.5rem;
+            border: 2px solid #a855f7;
+            border-radius: 2rem;
             padding: 2rem;
             max-width: 450px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 0 40px rgba(168,85,247,0.3);
+            box-shadow: 0 0 60px rgba(168,85,247,0.5);
         }
 
-        .verification-card h2 {
-            margin-bottom: 1rem;
+        .modal-card h1 {
             color: #c084fc;
+            margin-bottom: 1rem;
         }
 
         .discord-input {
             background: #0a0c12;
             border: 1px solid #3b4259;
-            border-radius: 0.6rem;
+            border-radius: 0.8rem;
             padding: 0.8rem;
             width: 100%;
             color: white;
             font-family: monospace;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
 
-        .join-btn {
-            display: inline-block;
+        .join-server {
             background: #5865F2;
             color: white;
             text-decoration: none;
             padding: 0.6rem 1.2rem;
             border-radius: 0.6rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem 0;
         }
 
-        .verify-btn {
+        .verify-modal-btn {
             background: #7c3aed;
             border: none;
             width: 100%;
@@ -84,11 +85,7 @@
             font-weight: bold;
             cursor: pointer;
             color: white;
-        }
-
-        .error-msg {
-            color: #f87171;
-            font-size: 0.75rem;
+            border-radius: 0.6rem;
             margin-top: 0.5rem;
         }
 
@@ -96,14 +93,13 @@
             display: none !important;
         }
 
+        /* main UI */
         .navbar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             border-bottom: 1px solid #2a2e3f;
             padding-bottom: 1rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
         }
 
         .logo {
@@ -115,15 +111,10 @@
             color: transparent;
         }
 
-        .logo span {
-            color: #e3e6f0;
-            background: none;
-        }
-
-        .grid-2col {
+        .grid-3col {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -131,18 +122,15 @@
             background: #11131c;
             border: 1px solid #252a3a;
             border-radius: 1.2rem;
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
 
         .card-header {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
             border-bottom: 1px solid #2a2e3f;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding-bottom: 0.5rem;
         }
 
         textarea, select {
@@ -152,18 +140,18 @@
             padding: 0.7rem;
             color: #e3e6f0;
             font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             width: 100%;
         }
 
         button {
             background: #1e2130;
             border: 1px solid #3b4259;
-            color: #e3e6f0;
-            padding: 0.6rem 1.2rem;
+            color: white;
+            padding: 0.5rem 1rem;
             border-radius: 0.6rem;
             cursor: pointer;
-            font-family: inherit;
+            margin-top: 0.5rem;
         }
 
         .btn-primary {
@@ -173,54 +161,40 @@
 
         .options-row {
             display: flex;
-            gap: 1rem;
             flex-wrap: wrap;
-            margin: 0.75rem 0;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
+            gap: 0.6rem;
+            margin: 0.5rem 0;
         }
 
         .output-area {
             background: #0a0c12;
             border-radius: 0.6rem;
-            padding: 1rem;
-            font-family: 'Fira Code', monospace;
+            padding: 0.8rem;
             font-size: 0.7rem;
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 500px;
+            max-height: 400px;
             overflow: auto;
-        }
-
-        .copy-btn {
-            background: #1e2130;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.7rem;
+            font-family: monospace;
         }
 
         .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
             font-size: 0.7rem;
             color: #7e849c;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
         }
 
         footer {
-            margin-top: 2rem;
             text-align: center;
             border-top: 1px solid #2a2e3f;
-            padding-top: 1.5rem;
+            padding-top: 1rem;
             font-size: 0.7rem;
         }
 
-        @media (max-width: 800px) {
-            .grid-2col {
+        @media (max-width: 1000px) {
+            .grid-3col {
                 grid-template-columns: 1fr;
             }
         }
@@ -228,247 +202,269 @@
 </head>
 <body>
 
-<div id="verificationModal" class="verification-overlay">
-    <div class="verification-card">
-        <h2>🔐 DISCORD VERIFICATION REQUIRED</h2>
-        <p>Join the official LUARMOR Discord server to access HEAVY obfuscation.</p>
-        <a href="https://discord.gg/mUvaDx8uuv" target="_blank" class="join-btn">📢 JOIN DISCORD</a>
-        <input type="text" id="discordUsername" class="discord-input" placeholder="Discord Username">
-        <button id="verifyBtn" class="verify-btn">✓ VERIFY</button>
-        <div id="verifyError" class="error-msg"></div>
+<div id="discordModal" class="discord-modal">
+    <div class="modal-card">
+        <h1>🔐 DISCORD LOCK</h1>
+        <p>You MUST join the official server and verify</p>
+        <a href="https://discord.gg/mUvaDx8uuv" target="_blank" class="join-server">📢 JOIN DISCORD</a>
+        <input type="text" id="discordUserInput" class="discord-input" placeholder="Your Discord username (example#1234)">
+        <button id="modalVerifyBtn" class="verify-modal-btn">✓ VERIFY & UNLOCK</button>
+        <div id="modalError" style="color:#f87171; font-size:0.7rem; margin-top:0.5rem;"></div>
     </div>
 </div>
 
-<div id="mainContent" class="container hidden">
+<div id="mainApp" class="container hidden">
     <div class="navbar">
-        <div class="logo">LU<span>ARMOR</span> | HEAVY</div>
-        <div class="nav-links">
-            <a href="#">OBFUSCATE</a>
-            <a href="#">VM</a>
-            <a href="#">LICENSE</a>
-        </div>
+        <div class="logo">LUARMOR | LUARPH GRADE + DEOBF</div>
+        <div>VERIFIED: <span id="verifiedUserSpan">NONE</span></div>
     </div>
 
-    <div class="grid-2col">
+    <div class="grid-3col">
+        <!-- INPUT -->
         <div class="card">
-            <div class="card-header">
-                <span>📜 INPUT SCRIPT</span>
-            </div>
-            <textarea id="inputScript" rows="10" placeholder="-- Lua code&#10;print('Hello')&#10;local x = 42&#10;function add(a,b) return a+b end"></textarea>
+            <div class="card-header">📜 INPUT SCRIPT</div>
+            <textarea id="inputScript" rows="12">-- LUARPH TEST
+print('Hello from LUARMOR')
+local x = 42
+function test(a,b) return a+b end
+for i=1,5 do print(i) end</textarea>
             <div class="options-row">
-                <select id="heavyLevel">
-                    <option value="max" selected>HEAVY (LUARPH GRADE - MAX)</option>
-                    <option value="extreme">EXTREME (SLOWEST)</option>
+                <select id="obfStrength">
+                    <option value="luarph">LUARPH GRADE (MAX)</option>
+                    <option value="extreme">EXTREME (SLOW)</option>
                 </select>
-                <button id="obfuscateBtn" class="btn-primary">▶ HEAVY OBFUSCATE</button>
+                <button id="obfuscateBtn" class="btn-primary">🔒 LUARPH OBFUSCATE</button>
             </div>
         </div>
 
+        <!-- OUTPUT -->
         <div class="card">
-            <div class="card-header">
-                <span>🔒 PROTECTED OUTPUT</span>
-                <button id="copyOutputBtn" class="copy-btn">📋 COPY</button>
-            </div>
-            <div id="outputContent" class="output-area">-- HEAVY obfuscated code --</div>
+            <div class="card-header">🔒 PROTECTED OUTPUT</div>
+            <div id="outputContent" class="output-area">-- Obfuscated code will appear</div>
             <div class="stats">
-                <span id="statsSize">Original: 0 B</span>
-                <span id="statsObfSize">Obfuscated: 0 B</span>
-                <span id="statsRatio">Ratio: 0x</span>
+                <span id="origSize">Orig: 0 B</span>
+                <span id="obfSize">Obf: 0 B</span>
+                <span id="ratio">Ratio: 0x</span>
             </div>
+            <button id="copyOutputBtn">📋 COPY</button>
+        </div>
+
+        <!-- DEOBFUSCATOR -->
+        <div class="card">
+            <div class="card-header">🔓 DEOBFUSCATOR (ATTEMPT)</div>
+            <textarea id="deobfInput" rows="6" placeholder="Paste obfuscated code here..."></textarea>
+            <button id="deobfuscateBtn" class="btn-primary">⚡ ATTEMPT DEOBFUSCATION</button>
+            <div id="deobfOutput" class="output-area" style="margin-top:0.5rem;">-- Deobf result will appear</div>
         </div>
     </div>
-    <footer>LUARMOR | VERIFIED: <span id="displayUsername">NONE</span></footer>
+    <footer>LUARMOR | LUARPH HEAVY VM + POLYMORPHIC LAYERS | DISCORD VERIFICATION MANDATORY</footer>
 </div>
 
 <script>
-(function(){
-    const VERIFIED_KEY = 'luarmor_heavy_user';
+    (function() {
+        const STORAGE_KEY = "luarmor_discord_user";
 
-    function rndStr(len){
-        let s='';
-        const c='_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for(let i=0;i<len;i++) s+=c[Math.floor(Math.random()*c.length)];
-        return s;
-    }
+        // ---------- LUARPH GRADE HEAVY OBFUSCATION ----------
+        function randStr(len) {
+            let chars = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let out = "";
+            for(let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
+            return out;
+        }
 
-    function heavyRename(code){
-        let kw=new Set(['and','break','do','else','elseif','end','false','for','function','if','in','local','nil','not','or','repeat','return','then','true','until','while','goto']);
-        let map=new Map();
-        let newCode=code;
-        let reLocal=/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g;
-        let m;
-        while((m=reLocal.exec(code))!==null){
-            let v=m[1];
-            if(!kw.has(v)&&!map.has(v)) map.set(v,rndStr(20));
+        function heavyRename(code) {
+            let keywords = new Set(['and','break','do','else','elseif','end','false','for','function','if','in','local','nil','not','or','repeat','return','then','true','until','while','goto']);
+            let map = new Map();
+            let newCode = code;
+            let localMatch = /local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g;
+            let m;
+            while((m = localMatch.exec(code)) !== null) {
+                let v = m[1];
+                if(!keywords.has(v) && !map.has(v)) map.set(v, randStr(24));
+            }
+            let funcMatch = /function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g;
+            while((m = funcMatch.exec(code)) !== null) {
+                let f = m[1];
+                if(!keywords.has(f) && !map.has(f)) map.set(f, randStr(24));
+            }
+            for(let [orig, newName] of map.entries()) {
+                let regex = new RegExp(`\\b${orig}\\b`, 'g');
+                newCode = newCode.replace(regex, newName);
+            }
+            return newCode;
         }
-        let reFunc=/function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g;
-        while((m=reFunc.exec(code))!==null){
-            let f=m[1];
-            if(!kw.has(f)&&!map.has(f)) map.set(f,rndStr(20));
-        }
-        for(let [orig,newV] of map.entries()){
-            let re=new RegExp(`\\b${orig}\\b`,'g');
-            newCode=newCode.replace(re,newV);
-        }
-        return newCode;
-    }
 
-    function xorStringEncode(code){
-        let strRe=/(["'])((?:(?=(\\?))\3.)*?)\1/g;
-        return code.replace(strRe,(match,q,content)=>{
-            let dec=content.replace(/\\(.)/g,(_,e)=>{
-                if(e==='n') return '\n';
-                if(e==='t') return '\t';
-                if(e==='\\') return '\\';
-                if(e==='"') return '"';
-                if(e==="'") return "'";
-                return e;
+        function xorStringEncodeHeavy(code) {
+            let strRegex = /(["'])((?:(?=(\\?))\3.)*?)\1/g;
+            return code.replace(strRegex, (match, quote, content) => {
+                let decoded = content.replace(/\\(.)/g, (_, esc) => {
+                    if(esc === 'n') return '\n';
+                    if(esc === 't') return '\t';
+                    if(esc === '\\') return '\\';
+                    if(esc === '"') return '"';
+                    if(esc === "'") return "'";
+                    return esc;
+                });
+                let bytes = [];
+                for(let i=0;i<decoded.length;i++) bytes.push(decoded.charCodeAt(i));
+                let key = Math.floor(Math.random() * 255);
+                let xored = bytes.map(b => b ^ key);
+                return `(function(k,d)local s=''for i=1,#d do s=s..string.char(d[i]~k)end return s end)(${key},{${xored.join(',')}})`;
             });
-            let bytes=[];
-            for(let i=0;i<dec.length;i++) bytes.push(dec.charCodeAt(i));
-            let key=Math.floor(Math.random()*0xFF);
-            let xored=bytes.map(b=>b^key);
-            return `(load(function(t,k)local s=''for i=1,#t do s=s..string.char(t[i]~k)end return s end)({${xored.join(',')}},${key}))()`;
-        });
-    }
+        }
 
-    function flattenHeavy(code){
-        let blocks=code.split('\n');
-        let flat='do local __s=1 while __s~=0 do if __s==1 then\n';
-        flat+=code+'\n__s=0\nend end end';
-        return flat;
-    }
+        function flowFlattenHeavy(code) {
+            return `do local __state=1 while __state~=0 do if __state==1 then ${code.replace(/\n/g,'\n')} __state=0 end end end`;
+        }
 
-    function deadCodeHeavy(code){
-        let lines=code.split('\n');
-        let out=[];
-        for(let i=0;i<lines.length;i++){
-            out.push(lines[i]);
-            if(i%2===0 && lines[i].trim().length>0){
-                out.push(`if (${Math.random()*1e6}|0)~=${Math.random()*1e6|0} then local _d=${Math.random().toString(36)} end`);
-                out.push(`do local _x=false while not _x do _x=true end end`);
+        function deadCodeFlood(code) {
+            let lines = code.split('\n');
+            let out = [];
+            for(let i=0;i<lines.length;i++) {
+                out.push(lines[i]);
+                if(i%2===0 && lines[i].trim().length>0) {
+                    out.push(`if (${Math.random()*1e9|0} ~= ${Math.random()*1e9|0}) then local _x=0xdead end`);
+                    out.push(`do local _f=false while not _f do _f=true end end`);
+                }
+            }
+            return out.join('\n');
+        }
+
+        function opaquePredHeavy(code) {
+            let a = Math.floor(Math.random()*99999);
+            let b = Math.floor(Math.random()*99999);
+            return `if (${a}*${a}%2==${a%2} and ${b}+${b+1}>${b}) then\n${code}\nend`;
+        }
+
+        function antiDebugHeavy(code) {
+            return `if debug and debug.getinfo then error("debug") end\n${code}\npcall(function() if not debug then end end)`;
+        }
+
+        function staticEnvHeavy(code) {
+            return `local _ENV=setmetatable({},{__index=function(t,k)return _G[k]end,__newindex=error})\n${code}`;
+        }
+
+        function polyLayerVM(code, level) {
+            let layerA = code;
+            let byteA = [];
+            for(let i=0;i<layerA.length;i++) byteA.push(layerA.charCodeAt(i) ^ 0xAA);
+            let inner = `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0xAA)end return s end)({${byteA.join(',')}})`;
+            let byteB = [];
+            for(let i=0;i<inner.length;i++) byteB.push(inner.charCodeAt(i) ^ 0x55);
+            let outer = `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0x55)end return s end)({${byteB.join(',')}})`;
+            if(level === 'extreme') {
+                let byteC = [];
+                for(let i=0;i<outer.length;i++) byteC.push(outer.charCodeAt(i) ^ 0xFF);
+                return `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0xFF)end return s end)({${byteC.join(',')}})()`;
+            }
+            return `pcall(function() return ${outer} end)()`;
+        }
+
+        function luarphGradeObfuscate(input, strength) {
+            let result = input;
+            result = heavyRename(result);
+            result = xorStringEncodeHeavy(result);
+            result = flowFlattenHeavy(result);
+            result = deadCodeFlood(result);
+            result = opaquePredHeavy(result);
+            result = antiDebugHeavy(result);
+            result = staticEnvHeavy(result);
+            for(let i=0;i<3;i++) result = opaquePredHeavy(result);
+            result = polyLayerVM(result, strength);
+            result = `-- LUARPH GRADE HEAVY\n-- ANTI-TAMPER\n${result}\nif not pcall(function() return 1 end) then error() end`;
+            return result;
+        }
+
+        // ---------- SIMPLE DEOBFUSCATOR (pattern removal) ----------
+        function simpleDeobfuscate(code) {
+            let result = code;
+            // remove luarph headers
+            result = result.replace(/-- LUARPH GRADE HEAVY.*\n/g, '');
+            result = result.replace(/-- ANTI-TAMPER.*\n/g, '');
+            // remove pcall wrappers
+            result = result.replace(/pcall\(function\(\) return (.*) end\)\(\)/g, '$1');
+            // extract from load() if possible (basic)
+            let loadMatch = result.match(/load\(function\(t\)local s=''[^}]+}\)({\([^)]+\))\(\)/);
+            if(loadMatch) {
+                result = "-- Deobf partial: extracted VM stub\n" + result;
+            }
+            // remove obvious deadcode patterns
+            result = result.replace(/if \(.*?\) then local _x=0xdead end/g, '');
+            result = result.replace(/do local _f=false while not _f do _f=true end end/g, '');
+            return result.length > 50 ? result : "-- Cannot fully deobfuscate (heavy VM layers)";
+        }
+
+        // UI elements
+        const modal = document.getElementById('discordModal');
+        const mainApp = document.getElementById('mainApp');
+        const verifyBtn = document.getElementById('modalVerifyBtn');
+        const discordInput = document.getElementById('discordUserInput');
+        const modalError = document.getElementById('modalError');
+
+        function checkDiscordAuth() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if(saved && saved.length > 2) {
+                document.getElementById('verifiedUserSpan').innerText = saved;
+                modal.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+            } else {
+                modal.classList.remove('hidden');
+                mainApp.classList.add('hidden');
             }
         }
-        return out.join('\n');
-    }
 
-    function opaquePredHeavy(code){
-        let a=Math.floor(Math.random()*1e5);
-        let b=Math.floor(Math.random()*1e5);
-        return `if (${a}*${a}%2==${a%2} and ${b}+${b+1}>${b}) then\n${code}\nend`;
-    }
+        verifyBtn.addEventListener('click', () => {
+            let username = discordInput.value.trim();
+            if(username.length < 3) {
+                modalError.innerText = "ERROR: valid discord username required";
+                return;
+            }
+            localStorage.setItem(STORAGE_KEY, username);
+            document.getElementById('verifiedUserSpan').innerText = username;
+            modal.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+        });
 
-    function antiDebugHeavy(code){
-        return `if debug and debug.getinfo then while true do end end\n${code}\npcall(function() if not debug then error() end end)`;
-    }
+        // Obfuscate handler
+        document.getElementById('obfuscateBtn').addEventListener('click', () => {
+            let input = document.getElementById('inputScript').value;
+            if(!input.trim()) {
+                document.getElementById('outputContent').innerText = "-- ERROR: empty script";
+                return;
+            }
+            let strength = document.getElementById('obfStrength').value;
+            let obfResult = luarphGradeObfuscate(input, strength);
+            let origSize = new Blob([input]).size;
+            let obfSize = new Blob([obfResult]).size;
+            let ratio = (obfSize/origSize).toFixed(2);
+            document.getElementById('origSize').innerText = `Orig: ${origSize} B`;
+            document.getElementById('obfSize').innerText = `Obf: ${obfSize} B`;
+            document.getElementById('ratio').innerText = `Ratio: ${ratio}x`;
+            document.getElementById('outputContent').innerText = obfResult;
+        });
 
-    function stringSplitObf(code){
-        let parts=[];
-        for(let i=0;i<code.length;i+=13){
-            parts.push(code.charCodeAt(i)||32);
-        }
-        return `-- SPLIT\n${code}`;
-    }
+        document.getElementById('copyOutputBtn').addEventListener('click', () => {
+            let txt = document.getElementById('outputContent').innerText;
+            navigator.clipboard.writeText(txt);
+            let btn = document.getElementById('copyOutputBtn');
+            let old = btn.innerText;
+            btn.innerText = '✓ COPIED!';
+            setTimeout(() => btn.innerText = old, 1200);
+        });
 
-    function envLock(code){
-        return `local _ENV=setmetatable({},{__index=function(t,k)return _G[k]end,__newindex=error})\n${code}`;
-    }
+        // Deobfuscator
+        document.getElementById('deobfuscateBtn').addEventListener('click', () => {
+            let inputCode = document.getElementById('deobfInput').value;
+            if(!inputCode.trim()) {
+                document.getElementById('deobfOutput').innerText = "-- Paste obfuscated code first";
+                return;
+            }
+            let deobfResult = simpleDeobfuscate(inputCode);
+            document.getElementById('deobfOutput').innerText = deobfResult;
+        });
 
-    function mathOpaque(code){
-        return `if math.sin(1)*math.cos(1)+math.tan(1)~=nil then\n${code}\nend`;
-    }
-
-    function multiLayerVM(code,level){
-        let layer1=code;
-        for(let i=0;i<layer1.length;i++){}
-        let b1=[];
-        for(let i=0;i<layer1.length;i++) b1.push(layer1.charCodeAt(i)^0xAA);
-        let inner=`load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0xAA)end return s end)({${b1.join(',')}})`;
-        let b2=[];
-        for(let i=0;i<inner.length;i++) b2.push(inner.charCodeAt(i)^0x55);
-        let outer=`load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0x55)end return s end)({${b2.join(',')}})`;
-        if(level==='extreme'){
-            let b3=[];
-            for(let i=0;i<outer.length;i++) b3.push(outer.charCodeAt(i)^0xFF);
-            return `load(function(t)local s=''for i=1,#t do s=s..string.char(t[i]~0xFF)end return s end)({${b3.join(',')}})()`;
-        }
-        return `pcall(function() return ${outer} end)()`;
-    }
-
-    function heavyObfuscate(input,strength){
-        let result=input;
-        result=heavyRename(result);
-        result=xorStringEncode(result);
-        result=flattenHeavy(result);
-        result=deadCodeHeavy(result);
-        result=opaquePredHeavy(result);
-        result=antiDebugHeavy(result);
-        result=envLock(result);
-        result=mathOpaque(result);
-        result=stringSplitObf(result);
-        for(let i=0;i<3;i++) result=opaquePredHeavy(result);
-        result=multiLayerVM(result,strength);
-        result=`-- LUARPH GRADE HEAVY OBFUSCATION\n-- VERIFIED USER\n${result}\n-- ANTI-TAMPER CHECK\nif not pcall(function() return 1 end) then error() end`;
-        return result;
-    }
-
-    function obfuscate(){
-        let input=document.getElementById('inputScript').value;
-        if(!input.trim()){
-            document.getElementById('outputContent').innerText='-- ERROR: empty input';
-            return;
-        }
-        let strength=document.getElementById('heavyLevel').value;
-        let obfuscated=heavyObfuscate(input,strength);
-        let origSize=new Blob([input]).size;
-        let obfSize=new Blob([obfuscated]).size;
-        let ratio=(obfSize/origSize).toFixed(2);
-        document.getElementById('statsSize').innerText=`Original: ${origSize} B`;
-        document.getElementById('statsObfSize').innerText=`Obfuscated: ${obfSize} B`;
-        document.getElementById('statsRatio').innerText=`Ratio: ${ratio}x`;
-        document.getElementById('outputContent').innerText=obfuscated;
-    }
-
-    function copyOutput(){
-        let txt=document.getElementById('outputContent').innerText;
-        navigator.clipboard.writeText(txt);
-        let btn=document.getElementById('copyOutputBtn');
-        let old=btn.innerText;
-        btn.innerText='✓ COPIED!';
-        setTimeout(()=>{btn.innerText=old;},1200);
-    }
-
-    function verify(){
-        let user=document.getElementById('discordUsername').value.trim();
-        if(user.length<2){
-            document.getElementById('verifyError').innerText='ERROR: invalid username';
-            return;
-        }
-        localStorage.setItem(VERIFIED_KEY,user);
-        document.getElementById('displayUsername').innerText=user;
-        document.getElementById('verificationModal').classList.add('hidden');
-        document.getElementById('mainContent').classList.remove('hidden');
-    }
-
-    function checkVerification(){
-        let saved=localStorage.getItem(VERIFIED_KEY);
-        if(saved && saved.length>1){
-            document.getElementById('displayUsername').innerText=saved;
-            document.getElementById('verificationModal').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-        }
-    }
-
-    document.getElementById('verifyBtn').addEventListener('click',verify);
-    document.getElementById('obfuscateBtn').addEventListener('click',obfuscate);
-    document.getElementById('copyOutputBtn').addEventListener('click',copyOutput);
-    checkVerification();
-    window.addEventListener('load',()=>{
-        let def=document.getElementById('inputScript').value;
-        let sz=new Blob([def]).size;
-        document.getElementById('statsSize').innerText=`Original: ${sz} B`;
-    });
-})();
+        checkDiscordAuth();
+    })();
 </script>
 </body>
 </html>
