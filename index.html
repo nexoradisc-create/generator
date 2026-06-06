@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MoonVeil / WeAreDevs Deobfuscator</title>
+    <title>MoonVeil / WeAreDevs Deobfuscator - Advanced</title>
     <style>
         body { background: #0a0a0a; color: #00ffcc; font-family: 'Courier New', monospace; padding: 20px; }
         textarea { width: 100%; height: 200px; background: #111; color: #0f0; border: 1px solid #0ff; font-family: monospace; }
@@ -11,8 +11,8 @@
     </style>
 </head>
 <body>
-<h2>MoonVeil / WeAreDevs Deobfuscator</h2>
-<textarea id="input" placeholder="Paste obfuscated Lua or JS (MoonVeil style) here..."></textarea><br>
+<h2>MoonVeil / WeAreDevs Deobfuscator - Full Pattern Match</h2>
+<textarea id="input" placeholder="Paste obfuscated Lua here..."></textarea><br>
 <button onclick="deobfuscate()">Deobfuscate</button>
 <button onclick="clearAll()">Clear</button>
 <h3>Result:</h3>
@@ -21,63 +21,114 @@
 <script>
     function deobfuscate() {
         let code = document.getElementById('input').value;
-        let result = "";
+        let original = code;
+        let changed = false;
 
-        // Stage 1: Remove base64 wrappers common in MoonVeil
-        let b64match = code.match(/loadstring\(decode\("([^"]+)"\)\)/);
-        if (!b64match) b64match = code.match(/loadstring\(dec\("([^"]+)"\)\)/);
-        if (!b64match) b64match = code.match(/loadstring\(\_G\[.*?\]\("([^"]+)"\)\)/);
-        if (b64match) {
-            try {
-                let decoded = atob(b64match[1]);
-                code = decoded;
-            } catch(e) { /* keep original */ }
+        // === PASS 1: Extract base64 from loadstring(decode("...")) ===
+        let b64patterns = [
+            /loadstring\(decode\("([A-Za-z0-9+\/=]+)"\)\)/g,
+            /loadstring\(dec\("([A-Za-z0-9+\/=]+)"\)\)/g,
+            /loadstring\(_G\[[^\]]+\]\("([A-Za-z0-9+\/=]+)"\)\)/g,
+            /loadstring\(\(function\(\)[^)]*return[^)]*\)\("([A-Za-z0-9+\/=]+)"\)\)/g,
+            /load\(decode\("([A-Za-z0-9+\/=]+)"\)\)/g,
+            /load\(dec\("([A-Za-z0-9+\/=]+)"\)\)/g
+        ];
+        for (let pat of b64patterns) {
+            let match;
+            while ((match = pat.exec(code)) !== null) {
+                try {
+                    let decoded = atob(match[1]);
+                    code = code.replace(match[0], decoded);
+                    changed = true;
+                } catch(e) {}
+            }
         }
 
-        // Stage 2: Remove loadstring wrappers
-        code = code.replace(/loadstring\(([^)]+)\)\(\)/g, '$1');
-        code = code.replace(/load\(([^)]+)\)\(\)/g, '$1');
+        // === PASS 2: Recursive base64 (nested) ===
+        let prev = "";
+        while (prev !== code) {
+            prev = code;
+            let nestedMatch = code.match(/["']([A-Za-z0-9+\/=]{20,})["']/);
+            if (nestedMatch) {
+                try {
+                    let decoded = atob(nestedMatch[1]);
+                    if (decoded.match(/[a-zA-Z]/) && decoded.length > 10) {
+                        code = code.replace(nestedMatch[1], decoded);
+                        changed = true;
+                    }
+                } catch(e) {}
+            }
+        }
 
-        // Stage 3: Handle WeAreDevs style __O__ array lookups
-        let obfArrayMatch = code.match(/local\s+__O__\s*=\s*\{([^}]+)\}/);
-        if (obfArrayMatch) {
-            let arrayContent = obfArrayMatch[1];
-            let elements = arrayContent.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+        // === PASS 3: Remove all loadstring / load wrappers ===
+        code = code.replace(/loadstring\(([^)]+)\)\s*\(\s*\)/g, '$1');
+        code = code.replace(/load\(([^)]+)\)\s*\(\s*\)/g, '$1');
+        code = code.replace(/loadstring\(([^)]+)\)/g, '$1');
+        code = code.replace(/load\(([^)]+)\)/g, '$1');
+
+        // === PASS 4: WeAreDevs __O__ array reconstruction ===
+        let arrayObj = {};
+        let arrayMatch = code.match(/local\s+__O__\s*=\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}/);
+        if (arrayMatch) {
+            let rawArr = arrayMatch[1];
+            let elements = [];
+            let depth = 0;
+            let current = "";
+            for (let i = 0; i < rawArr.length; i++) {
+                let ch = rawArr[i];
+                if (ch === '[') depth++;
+                if (ch === ']') depth--;
+                if (ch === ',' && depth === 0) {
+                    elements.push(current.trim());
+                    current = "";
+                } else {
+                    current += ch;
+                }
+            }
+            if (current.trim()) elements.push(current.trim());
+            for (let i = 0; i < elements.length; i++) {
+                let val = elements[i].replace(/^["']|["']$/g, '');
+                arrayObj[i+1] = val;
+            }
             code = code.replace(/__O__\[(\d+)\]/g, (match, idx) => {
-                let i = parseInt(idx);
-                return elements[i] || match;
+                let num = parseInt(idx);
+                return arrayObj[num] || match;
             });
+            changed = changed || Object.keys(arrayObj).length > 0;
         }
 
-        // Stage 4: Remove string.char obfuscation
+        // === PASS 5: string.char to string ===
         code = code.replace(/string\.char\(([^)]+)\)/g, (match, group) => {
-            let nums = group.split(',').map(n => parseInt(n.trim()));
-            let chars = nums.map(n => String.fromCharCode(n)).join('');
-            return JSON.stringify(chars);
+            let nums = group.split(',').map(n => {
+                let num = parseInt(n.trim());
+                return isNaN(num) ? 0 : num;
+            });
+            let str = nums.map(n => String.fromCharCode(n)).join('');
+            return JSON.stringify(str);
         });
 
-        // Stage 5: Remove (function() ... end)() wrapper if present
-        code = code.replace(/^\(\s*function\s*\(\)\s*([\s\S]*?)\s*end\s*\)\s*\(\s*\)/i, '$1');
-
-        // Stage 6: Replace escaped characters
+        // === PASS 6: Hexadecimal and octal escape sequences ===
         code = code.replace(/\\x([0-9A-Fa-f]{2})/g, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
-        code = code.replace(/\\(\d{3})/g, (match, oct) => String.fromCharCode(parseInt(oct, 8)));
+        code = code.replace(/\\(\d{2,3})/g, (match, oct) => {
+            let codePoint = parseInt(oct, 8);
+            return codePoint <= 255 ? String.fromCharCode(codePoint) : match;
+        });
 
-        // Stage 7: Pretty print attempt (basic)
-        code = code.replace(/;{2,}/g, ';\n');
-        code = code.replace(/\)\{/g, ')\n{');
-        code = code.replace(/\}\s*else/g, '} else');
+        // === PASS 7: Remove (function() ... end)() self-executing wrapper ===
+        code = code.replace(/^\(\s*function\s*\(\)\s*([\s\S]*?)\s*end\s*\)\s*\(\s*\)/i, '$1');
+        code = code.replace(/\(\s*function\s*\([^)]*\)\s*([\s\S]*?)\s*end\s*\)\s*\(\s*[^)]*\s*\)/gi, '$1');
 
-        // Stage 8: Remove redundant __O__ leftovers
-        code = code.replace(/__O__\[[^\]]+\]/g, '?');
+        // === PASS 8: Clean up artifacts ===
+        code = code.replace(/__O__\[[^\]]+\]/g, 'nil');
+        code = code.replace(/;[ \t]*\n[ \t]*;/g, ';\n');
+        code = code.replace(/\n\s*\n/g, '\n');
 
-        if (code === document.getElementById('input').value || code.length < 10) {
-            result = "// Could not fully deobfuscate. Here is raw cleaned version:\n" + code;
+        // Final check
+        if (!changed || code === original || code.length < 5) {
+            document.getElementById('output').innerText = "// No obfuscation patterns detected or deobfuscation failed.\n// Raw input:\n" + original;
         } else {
-            result = "// Deobfuscated result:\n" + code;
+            document.getElementById('output').innerText = "// Deobfuscated successfully:\n" + code;
         }
-
-        document.getElementById('output').innerText = result;
     }
 
     function clearAll() {
